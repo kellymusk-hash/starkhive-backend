@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ProjectsController } from './projects/projects.controller';
 import { AuthMiddleware } from './auth/middleware/auth.middleware';
