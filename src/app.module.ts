@@ -5,6 +5,7 @@ import { ProjectsController } from './projects/projects.controller';
 import { AuthMiddleware } from './auth/middleware/auth.middleware';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { PermissionService } from './auth/services/permission.service';
+import { PermissionGuard } from './auth/guards/permissions.guard';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { PermissionService } from './auth/services/permission.service';
     }),
   ],
   controllers: [ProjectsController],
-  providers: [RolesGuard, PermissionService],
+  providers: [RolesGuard, PermissionGuard, PermissionService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
