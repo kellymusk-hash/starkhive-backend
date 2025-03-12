@@ -8,7 +8,7 @@ import { JobPosting } from './job-postings/entities/job-posting.entity';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env'],
+      envFilePath: ['.env.development', '.env.production', '.env.test'],
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
