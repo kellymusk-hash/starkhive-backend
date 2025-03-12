@@ -1,8 +1,14 @@
-import { Module } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JobPostingsModule } from './job-postings/job-postings.module';
 import { JobPosting } from './job-postings/entities/job-posting.entity';
+import { AuthMiddleware } from './auth/middleware/auth.middleware';
+import { RolesGuard } from './auth/guards/roles.guard';
+import { PermissionService } from './auth/services/permission.service';
+import { PermissionGuard } from './auth/guards/permissions.guard';
+
 
 @Module({
   imports: [
@@ -22,5 +28,11 @@ import { JobPosting } from './job-postings/entities/job-posting.entity';
     }),
     JobPostingsModule,
   ],
+  controllers: [],
+  providers: [RolesGuard, PermissionGuard, PermissionService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware);
+  }
+}
