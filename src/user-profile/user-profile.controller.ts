@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { UserProfileService } from './user-profile.service';
 import { CreateUserProfileDto } from './dto/create-user-profile.dto';
@@ -34,12 +35,51 @@ export class UserProfileController {
     return this.userProfileService.findOne(id);
   }
 
+  @Get('wallet/:address')
+  findByWalletAddress(
+    @Param('address') walletAddress: string,
+  ): Promise<UserProfile> {
+    return this.userProfileService.findByWalletAddress(walletAddress);
+  }
+
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserProfileDto: UpdateUserProfileDto,
   ): Promise<UserProfile> {
     return this.userProfileService.update(id, updateUserProfileDto);
+  }
+
+  @Patch(':id/reputation')
+  updateReputationScore(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('reputationScore', ParseIntPipe) reputationScore: number,
+  ): Promise<UserProfile> {
+    return this.userProfileService.updateReputationScore(id, reputationScore);
+  }
+
+  @Patch(':id/skills')
+  addSkill(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('skill') skill: string,
+  ): Promise<UserProfile> {
+    return this.userProfileService.addSkill(id, skill);
+  }
+
+  @Patch(':id/work-history')
+  addWorkHistory(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('workItem') workItem: string,
+  ): Promise<UserProfile> {
+    return this.userProfileService.addWorkHistory(id, workItem);
+  }
+
+  @Patch(':id/status')
+  setActiveStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('isActive') isActive: boolean,
+  ): Promise<UserProfile> {
+    return this.userProfileService.setActiveStatus(id, isActive);
   }
 
   @Delete(':id')

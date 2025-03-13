@@ -1,29 +1,41 @@
 import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
   IsString,
+  IsEmail,
+  IsArray,
+  IsOptional,
+  IsIn,
+  IsNumber,
   IsBoolean,
 } from 'class-validator';
 
 export class CreateUserProfileDto {
-  @IsNotEmpty()
   @IsString()
-  firstName: string;
+  name: string;
 
-  @IsNotEmpty()
-  @IsString()
-  lastName: string;
-
-  @IsNotEmpty()
   @IsEmail()
   email: string;
 
-  @IsOptional()
   @IsString()
-  phoneNumber?: string;
+  walletAddress: string;
 
   @IsOptional()
   @IsString()
-  address?: string;
+  @IsIn(['ETH', 'USDC', 'STARKNET'])
+  paymentPreference?: string = 'ETH';
+
+  @IsArray()
+  @IsOptional()
+  skills?: string[] = [];
+
+  @IsArray()
+  @IsOptional()
+  workHistory?: string[] = [];
+
+  @IsNumber()
+  @IsOptional()
+  reputationScore?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  isActive?: boolean;
 }

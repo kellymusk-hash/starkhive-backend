@@ -2,35 +2,30 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class UserProfile {
-    //entity class
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  firstName: string;
+  name: string;
 
   @Column()
-  lastName: string;
-
-  @Column({ unique: true })
   email: string;
 
-  @Column({ nullable: true })
-  phoneNumber: string;
+  @Column()
+  walletAddress: string;
 
-  @Column({ nullable: true })
-  address: string;
+  @Column({ default: 0 })
+  reputationScore: number;
+
+  @Column({ default: 'ETH' })
+  paymentPreference: string;
+
+  @Column('text', { array: true, default: [] })
+  skills: string[];
+
+  @Column('text', { array: true, default: [] })
+  workHistory: string[];
 
   @Column({ default: true })
   isActive: boolean;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
-
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
 }

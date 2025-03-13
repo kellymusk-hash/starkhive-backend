@@ -6,31 +6,43 @@ import {
   IsOptional,
   IsString,
   IsBoolean,
+  IsNumber,
+  IsArray,
+  IsIn,
 } from 'class-validator';
 
 export class UpdateUserProfileDto extends PartialType(CreateUserProfileDto) {
-    @IsOptional()
   @IsString()
-  firstName?: string;
-
   @IsOptional()
-  @IsString()
-  lastName?: string;
+  name?: string;
 
-  @IsOptional()
   @IsEmail()
+  @IsOptional()
   email?: string;
 
-  @IsOptional()
   @IsString()
-  phoneNumber?: string;
+  @IsOptional()
+  walletAddress?: string;
+
+  @IsNumber()
+  @IsOptional()
+  reputationScore?: number;
 
   @IsOptional()
   @IsString()
-  address?: string;
+  @IsIn(['ETH', 'USDC', 'STARKNET'])
+  paymentPreference?: string;
 
+  @IsArray()
   @IsOptional()
+  skills?: string[];
+
+  @IsArray()
+  @IsOptional()
+  workHistory?: string[];
+
   @IsBoolean()
+  @IsOptional()
   isActive?: boolean;
 }
 

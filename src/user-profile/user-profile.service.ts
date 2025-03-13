@@ -24,6 +24,18 @@ export class UserProfileService {
     return userProfile;
   }
 
+  async findByWalletAddress(walletAddress: string): Promise<UserProfile> {
+    const userProfile = await this.userProfileRepository.findOneBy({
+      walletAddress,
+    });
+    if (!userProfile) {
+      throw new NotFoundException(
+        `User Profile with wallet address ${walletAddress} not found`,
+      );
+    }
+    return userProfile;
+  }
+
   async create(
     createUserProfileDto: CreateUserProfileDto,
   ): Promise<UserProfile> {
@@ -38,6 +50,36 @@ export class UserProfileService {
     const userProfile = await this.findOne(id);
     const updatedUserProfile = Object.assign(userProfile, updateUserProfileDto);
     return this.userProfileRepository.save(updatedUserProfile);
+  }
+
+  async updateReputationScore(
+    id: number,
+    reputationScore: number,
+  ): Promise<UserProfile> {
+    const userProfile = await this.findOne(id);
+    userProfile.reputationScore = reputationScore;
+    return this.userProfileRepository.save(userProfile);
+  }
+
+  async addSkill(id: number, skill: string): Promise<UserProfile> {
+    const userProfile = await this.findOne(id);
+    if (!userProfile.skills.includes(skill)) {
+      userProfile.skills.push(skill);
+      return this.userProfileRepository.save(userProfile);
+    }
+    return userProfile;
+  }
+
+  async addWorkHistory(id: number, workItem: string): Promise<UserProfile> {
+    const userProfile = await this.findOne(id);
+    userProfile.workHistory.push(workItem);
+    return this.userProfileRepository.save(userProfile);
+  }
+
+  async setActiveStatus(id: number, isActive: boolean): Promise<UserProfile> {
+    const userProfile = await this.findOne(id);
+    userProfile.isActive = isActive;
+    return this.userProfileRepository.save(userProfile);
   }
 
   async remove(id: number): Promise<void> {
