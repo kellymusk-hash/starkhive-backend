@@ -9,7 +9,6 @@ import { RolesGuard } from './auth/guards/roles.guard';
 import { PermissionService } from './auth/services/permission.service';
 import { PermissionGuard } from './auth/guards/permissions.guard';
 
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
