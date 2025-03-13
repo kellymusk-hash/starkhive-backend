@@ -8,6 +8,7 @@ import { AuthMiddleware } from './auth/middleware/auth.middleware';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { PermissionService } from './auth/services/permission.service';
 import { PermissionGuard } from './auth/guards/permissions.guard';
+import { UserModule } from './user/user.module';
 
 
 @Module({
@@ -27,6 +28,7 @@ import { PermissionGuard } from './auth/guards/permissions.guard';
       synchronize: true, // Automatically create tables (disable in production)
     }),
     JobPostingsModule,
+    UserModule,
   ],
   controllers: [],
   providers: [RolesGuard, PermissionGuard, PermissionService],
