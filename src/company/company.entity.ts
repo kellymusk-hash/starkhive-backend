@@ -13,16 +13,16 @@ import {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({ unique: true })
+    @Column({ unique: true, nullable: false })
     name: string;
   
-    @Column({ nullable: true })
+    @Column({ nullable: false })
     description: string;
   
-    @Column({ nullable: true })
+    @Column({ nullable: false })
     website: string;
   
-    @Column({ nullable: true })
+    @Column({ nullable: false })
     walletAddress: string;
   
     // @ManyToOne(() => User, (user) => user.companies, { onDelete: 'CASCADE' })

@@ -7,13 +7,16 @@ export class CreateCompanyDto {
 
   @IsOptional()
   @IsString()
-  description?: string;
+  @IsNotEmpty()
+  description: string;
 
   @IsOptional()
   @IsString()
-  website?: string;
+  @IsNotEmpty()
+  website: string;
 
   @IsOptional()
   @IsString()
-  walletAddress?: string;
+  @IsNotEmpty()
+  walletAddress: string;
 }
