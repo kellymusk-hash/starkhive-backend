@@ -9,13 +9,15 @@ import { RolesGuard } from './auth/guards/roles.guard';
 import { PermissionService } from './auth/services/permission.service';
 import { PermissionGuard } from './auth/guards/permissions.guard';
 import { UserModule } from './user/user.module';
-
+import { User } from './user/entities/user.entity';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env.development', '.env.production', '.env.test'],
+      envFilePath: ['.env.development', '.env.production', '.env.test',],
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -24,7 +26,7 @@ import { UserModule } from './user/user.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [JobPosting],
+      entities: [JobPosting, User],
       synchronize: true, // Automatically create tables (disable in production)
     }),
     JobPostingsModule,

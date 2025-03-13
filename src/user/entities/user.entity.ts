@@ -1,7 +1,8 @@
 import { IsEmail, IsNotEmpty, Length } from 'class-validator';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 
 @Entity('users')
+@Index(['username', 'email'])
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
