@@ -28,7 +28,7 @@ export class UserProfileController {
   @Get()
   findAll(): Promise<UserProfile[]> {
     return this.userProfileService.findAll();
-    //get request to /user-profiles
+    //get request to /user-profiless
   }
 
   @Get(':id')
