@@ -9,6 +9,10 @@ import { RolesGuard } from './auth/guards/roles.guard';
 import { PermissionService } from './auth/services/permission.service';
 import { PermissionGuard } from './auth/guards/permissions.guard';
 import { CompanyModule } from './company/company.module';
+import { UserModule } from './user/user.module';
+import { User } from './user/entities/user.entity';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 
 @Module({
@@ -16,7 +20,7 @@ import { CompanyModule } from './company/company.module';
     // Load environment variables globally
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env.development', '.env.production', '.env.test'],
+      envFilePath: ['.env.development', '.env.production', '.env.test',],
     }),
 
     // Configure TypeORM with environment variables
@@ -41,11 +45,12 @@ import { CompanyModule } from './company/company.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [JobPosting],
+      entities: [JobPosting, User],
       synchronize: true, // Automatically create tables (disable in production)
     }),
     JobPostingsModule,
     CompanyModule,
+    UserModule
   ],
   controllers: [],
   providers: [RolesGuard, PermissionGuard, PermissionService],
