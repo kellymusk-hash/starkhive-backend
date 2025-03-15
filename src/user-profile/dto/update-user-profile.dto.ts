@@ -12,37 +12,5 @@ import {
 } from 'class-validator';
 
 export class UpdateUserProfileDto extends PartialType(CreateUserProfileDto) {
-  @IsString()
-  @IsOptional()
-  name?: string;
-
-  @IsEmail()
-  @IsOptional()
-  email?: string;
-
-  @IsString()
-  @IsOptional()
-  walletAddress?: string;
-
-  @IsNumber()
-  @IsOptional()
-  reputationScore?: number;
-
-  @IsOptional()
-  @IsString()
-  @IsIn(['ETH', 'USDC', 'STARKNET'])
-  paymentPreference?: string;
-
-  @IsArray()
-  @IsOptional()
-  skills?: string[];
-
-  @IsArray()
-  @IsOptional()
-  workHistory?: string[];
-
-  @IsBoolean()
-  @IsOptional()
-  isActive?: boolean;
 }
 
