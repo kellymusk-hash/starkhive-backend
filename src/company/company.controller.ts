@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
-import { CreateCompanyDto } from './dto/create-company.dto';
+import { CreateCompanyDto } from './DTO/create-company.dto';
 import { CompanyService } from './provider/company.service';
 import { UpdateCompanyDto } from './DTO/updateCompanyDto';
 
@@ -9,7 +9,7 @@ export class CompanyController {
 
   @Post()
   async create(@Body() createCompanyDto: CreateCompanyDto) {
-    return 'Create method - Company created successfully!';
+    return this.companyService.create(createCompanyDto);
   }
 
   @Get()
