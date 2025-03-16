@@ -5,6 +5,7 @@ import {
     ManyToOne,
     CreateDateColumn,
     UpdateDateColumn,
+    DeleteDateColumn
   } from 'typeorm';
 //   import { User } from '../../user/entities/user.entity';
   
@@ -33,5 +34,8 @@ import {
   
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @DeleteDateColumn()   //needed for soft deletion
+    deletedAt?: Date;
   }
   

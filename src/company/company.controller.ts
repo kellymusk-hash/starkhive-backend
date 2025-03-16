@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
-import { CreateCompanyDto } from './dto/create-company.dto';
+import { CreateCompanyDto } from './DTO/create-company.dto';
 import { CompanyService } from './provider/company.service';
 import { UpdateCompanyDto } from './DTO/updateCompanyDto';
 
@@ -9,26 +9,26 @@ export class CompanyController {
 
   @Post()
   async create(@Body() createCompanyDto: CreateCompanyDto) {
-    return 'Create method - Company created successfully!';
+    return this.companyService.create(createCompanyDto);
   }
 
   @Get()
   async findAll() {
-    return 'Find all companies - Returning list of companies!';
+    return this.companyService.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: number) {
-    return `Find one company - Returning company with ID ${id}!`;
+    return await this.companyService.findOne(id);
   }
 
   @Patch(':id')
   async update(@Param('id') id: number, @Body() updateCompanyDto: UpdateCompanyDto) {
-    return `Update method - Updating company with ID ${id}!`;
+    return await this.companyService.update(id, updateCompanyDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: number) {
-    return `Delete method - Removing company with ID ${id}!`;
+    return await this.companyService.remove(id);
   }
 }
