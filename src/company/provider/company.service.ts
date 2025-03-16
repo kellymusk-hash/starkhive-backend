@@ -4,12 +4,15 @@ import { UpdateCompanyDto } from '../DTO/updateCompanyDto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Company } from '../company.entity';
+import { FindACompanyProvider } from './find-a-company.provider';
 
 @Injectable()
 export class CompanyService {
   constructor(
       @InjectRepository(Company)
       private companyRepository: Repository<Company>,
+      private findACompanyProvider: FindACompanyProvider,
+
     ) {}
 
   // Create a company
@@ -35,28 +38,12 @@ export class CompanyService {
 
   // Get one company by ID
   async findOne(id: number) {
-    const company = await this.companyRepository.findOne({
-      where: { id },
-      withDeleted: false,   //this excludes any company that has been deleted (returns from active companies only)
-    });
-
-    if (!company) {
-      throw new NotFoundException(`Company with ID ${id} not found.`);
-    }
-
-    return company;  
+    return await this.findACompanyProvider.findACompanyById(id, false);
   }
 
   // Update a company
   async update(id: number, updateCompanyDto: UpdateCompanyDto) {
-    const company = await this.companyRepository.findOne({
-      where: { id },
-      withDeleted: false,
-    });
-
-    if (!company) {
-      throw new NotFoundException(`Company with ID ${id} not found.`);
-    }
+    const company = await this.findACompanyProvider.findACompanyById(id, false);
 
     Object.assign(company, updateCompanyDto);
     return await this.companyRepository.save(company);
@@ -64,14 +51,7 @@ export class CompanyService {
 
   // Delete a company
   async remove(id: number) {
-    const company = await this.companyRepository.findOne({
-      where: { id },
-      withDeleted: false,
-    });
-
-    if (!company) {
-      throw new NotFoundException(`Company with ID ${id} not found.`);
-    }
+    const company = await this.findACompanyProvider.findACompanyById(id, false);
 
     await this.companyRepository.softDelete(id);
     return { message: `Company with ID ${id} has been soft-deleted.` };
