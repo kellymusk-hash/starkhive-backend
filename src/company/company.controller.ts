@@ -14,21 +14,21 @@ export class CompanyController {
 
   @Get()
   async findAll() {
-    return 'Find all companies - Returning list of companies!';
+    return this.companyService.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: number) {
-    return `Find one company - Returning company with ID ${id}!`;
+    return await this.companyService.findOne(id);
   }
 
   @Patch(':id')
   async update(@Param('id') id: number, @Body() updateCompanyDto: UpdateCompanyDto) {
-    return `Update method - Updating company with ID ${id}!`;
+    return await this.companyService.update(id, updateCompanyDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: number) {
-    return `Delete method - Removing company with ID ${id}!`;
+    return await this.companyService.remove(id);
   }
 }

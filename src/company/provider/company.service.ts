@@ -1,4 +1,4 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { CreateCompanyDto } from '../DTO/create-company.dto';
 import { UpdateCompanyDto } from '../DTO/updateCompanyDto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -30,21 +30,50 @@ export class CompanyService {
 
   // Get all companies
   async findAll() {
-    return 'Returning list of companies!';
+    return await this.companyRepository.find({ withDeleted: false });
   }
 
   // Get one company by ID
   async findOne(id: number) {
-    return `Returning company with ID ${id}!`;
+    const company = await this.companyRepository.findOne({
+      where: { id },
+      withDeleted: false,   //this excludes any company that has been deleted (returns from active companies only)
+    });
+
+    if (!company) {
+      throw new NotFoundException(`Company with ID ${id} not found.`);
+    }
+
+    return company;  
   }
 
   // Update a company
   async update(id: number, updateCompanyDto: UpdateCompanyDto) {
-    return `Updating company with ID ${id}!`;
+    const company = await this.companyRepository.findOne({
+      where: { id },
+      withDeleted: false,
+    });
+
+    if (!company) {
+      throw new NotFoundException(`Company with ID ${id} not found.`);
+    }
+
+    Object.assign(company, updateCompanyDto);
+    return await this.companyRepository.save(company);
   }
 
   // Delete a company
   async remove(id: number) {
-    return `Removing company with ID ${id}!`;
+    const company = await this.companyRepository.findOne({
+      where: { id },
+      withDeleted: false,
+    });
+
+    if (!company) {
+      throw new NotFoundException(`Company with ID ${id} not found.`);
+    }
+
+    await this.companyRepository.softDelete(id);
+    return { message: `Company with ID ${id} has been soft-deleted.` };
   }
 }
