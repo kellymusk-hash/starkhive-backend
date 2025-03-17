@@ -1,0 +1,50 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "StarkHive Auth",
+    "dateExported": "2025-03-16T10:40:00+01:00",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "name": "Connect Wallet",
+            "url": "http://localhost:3000/auth/connect",
+            "method": "POST",
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"walletAddress\": \"0x123...\"\n}"
+            },
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ]
+        },
+        {
+            "name": "Verify Signature",
+            "url": "http://localhost:3000/auth/verify",
+            "method": "POST",
+            "body": {
+                "type": "json",
+                "raw": "{\n    \"walletAddress\": \"0x123...\",\n    \"signature\": [\"0x456...\", \"0x789...\"],\n    \"message\": \"Welcome to StarkHive!\\n\\nPlease sign this message to authenticate.\\n\\nNonce: REPLACE_WITH_NONCE\"\n}"
+            },
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ]
+        },
+        {
+            "name": "Test Protected Route",
+            "url": "http://localhost:3000/auth/test-auth",
+            "method": "GET",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer REPLACE_WITH_JWT_TOKEN"
+                }
+            ]
+        }
+    ]
+}
