@@ -33,7 +33,6 @@ export class User {
   @OneToMany(() => NotificationSettings, (notification) => notification.user)
   notificationSettings: NotificationSettings[];
 
-
   @CreateDateColumn()
   createdAt: Date;
 
