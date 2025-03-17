@@ -14,6 +14,8 @@ import { User } from './user/entities/user.entity';
 import * as dotenv from 'dotenv';
 import { ContractModule } from './contract/contract.module';
 import { PaymentModule } from './payment/payment.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { NotificationSettingsModule } from './notification-settings/notification-settings.module';
 dotenv.config();
 
 @Module({
@@ -44,6 +46,8 @@ dotenv.config();
     UserModule,
     ContractModule,
     PaymentModule,
+    NotificationsModule,
+    NotificationSettingsModule,
   ],
   controllers: [],
   providers: [RolesGuard, PermissionGuard, PermissionService],

@@ -1,5 +1,6 @@
 import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 import { Contract } from 'src/contract/entities/contract.entity';
+import { NotificationSettings } from 'src/notification-settings/entities/notification-settings.entity';
 import { Payment } from 'src/payment/entities/payment.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
 
@@ -28,6 +29,9 @@ export class User {
 
   @OneToMany(() => Payment, (payment) => payment.user)
   payments: Payment[];
+
+  @OneToMany(() => NotificationSettings, (notification) => notification.user)
+  notificationSettings: NotificationSettings[];
 
 
   @CreateDateColumn()
