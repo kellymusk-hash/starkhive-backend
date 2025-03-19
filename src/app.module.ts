@@ -15,6 +15,7 @@ import * as dotenv from 'dotenv';
 import { ContractModule } from './contract/contract.module';
 import { PaymentModule } from './payment/payment.module';
 import { AuthModule } from './auth/auth.module';
+import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 dotenv.config();
 
 @Module({
@@ -48,6 +49,7 @@ dotenv.config();
         UserModule,
         ContractModule,
         PaymentModule,
+        FreelancerProfileModule,
     ],
     providers: [RolesGuard, PermissionGuard, PermissionService],
 })
