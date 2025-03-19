@@ -1,14 +1,37 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PaymentService } from './payment.service';
+import { PaymentController } from './payment.controller';
+import { ConfigModule } from '@nestjs/config';
+import { TransactionLogService } from './transaction-log.service';
+import { TransactionLog } from './entities/transaction-log.entity';
+import { WebhookLog } from './entities/webhook-log.entity';
+import { CallbackLog } from './entities/callback-log.entity';
 import { Payment } from './entities/payment.entity';
 import { PaymentRepository } from './repositories/payment.repository';
-import { PaymentController } from './payment.controller';
-import { PaymentService } from './payment.service';
+import { User } from '../user/entities/user.entity';
+import { Contract } from '../contract/entities/contract.entity';
+import { PermissionGuard } from 'src/auth/guards/permissions.guard';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Payment, PaymentRepository])],
+  imports: [
+    ConfigModule,
+    TypeOrmModule.forFeature([
+      TransactionLog, 
+      WebhookLog, 
+      CallbackLog, 
+      Payment,
+      User,
+      Contract
+    ]),
+  ],
   controllers: [PaymentController],
-  providers: [PaymentService],
-  exports: [PaymentService], 
+  providers: [
+    PaymentService, 
+    TransactionLogService, 
+    PermissionGuard,
+    PaymentRepository
+  ],
+  exports: [PaymentService],
 })
 export class PaymentModule {}

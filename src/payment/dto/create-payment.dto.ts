@@ -1,19 +1,30 @@
-import { IsNotEmpty, IsUUID, IsNumber, IsString, IsOptional } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsString, IsOptional, Min, IsUUID } from 'class-validator';
 
 export class CreatePaymentDto {
-  @IsNotEmpty()
-  @IsNumber()
+  @IsEmail({}, { message: 'Please provide a valid email address' })
+  @IsNotEmpty({ message: 'Email is required' })
+  email: string;
+
+  @IsNumber({}, { message: 'Amount must be a number' })
+  @Min(100, { message: 'Amount must be at least 100' })
+  @IsNotEmpty({ message: 'Amount is required' })
   amount: number;
 
-  @IsNotEmpty()
-  @IsString()
-  currency: string;
+  @IsUUID('4', { message: 'User ID must be a valid UUID' })
+  @IsNotEmpty({ message: 'User ID is required' })
+  userId: string;
 
-  @IsUUID()
+  @IsUUID('4', { message: 'Contract ID must be a valid UUID' })
+  @IsNotEmpty({ message: 'Contract ID is required' })
   contractId: string;
 
-  @IsUUID()
-  userId: string;
+  @IsString({ message: 'Purpose must be a string' })
+  @IsOptional()
+  purpose?: string;
+
+  @IsString({ message: 'Currency must be a string' })
+  @IsOptional()
+  currency?: string = 'NGN';
 
   @IsOptional()
   @IsString()
