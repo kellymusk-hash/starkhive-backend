@@ -1,15 +1,15 @@
 import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import type { Repository } from "typeorm"
-import { PostImage } from "./entities/post-image.entity"
 import { PostReaction } from "./entities/post-reaction.entity"
-import { UserService } from "src/user/user.service"
-import { CreatePostDto } from "./dto/create-post.dto"
+import { PostImage } from "./entities/post-image.entity"
+import type { UserService } from "src/user/user.service"
+import type { CreateReactionDto } from "./dto/create-reaction.dto"
+import type { CreatePostDto } from "./dto/create-post.dto"
+import type { UpdatePostDto } from "./dto/update-post.dto"
 import { PostRepository } from "./repositories/post.repository"
 import { HashtagRepository } from "./repositories/hashtag.repository"
-import { Post, PostPrivacy } from "./entities/post.entity"
-import { UpdatePostDto } from "./dto/update-post.dto"
-import { CreateReactionDto } from "./dto/create-reaction.dto"
+import { type Post, PostPrivacy } from "./entities/post.entity"
 
 @Injectable()
 export class PostService {
@@ -51,7 +51,7 @@ export class PostService {
       }
 
       if (originalPost.privacy === PostPrivacy.CONNECTIONS) {
-        const connections = await this.usersService.getUserConnections(userId)
+        const connections:any = await this.usersService.getUserConnections(userId)
         if (originalPost.authorId !== userId && !connections.includes(originalPost.authorId)) {
           throw new ForbiddenException("Cannot repost this post")
         }
@@ -66,7 +66,6 @@ export class PostService {
       content: createPostDto.content,
       privacy: createPostDto.privacy,
       authorId: userId,
-      metadata,
       hashtags,
       originalPostId: createPostDto.originalPostId,
     })
@@ -118,7 +117,7 @@ export class PostService {
 
       // Update metadata
       updates.metadata = {
-        links: updatePostDto.links || post.metadata.links,
+        links:  post.metadata.links || [],
         mentions: this.extractMentions(updatePostDto.content),
       }
     }
@@ -187,7 +186,7 @@ export class PostService {
     }
 
     if (post.privacy === PostPrivacy.CONNECTIONS && post.authorId !== userId) {
-      const connections = await this.usersService.getUserConnections(userId)
+      const connections:any = await this.usersService.getUserConnections(userId)
       if (!connections.includes(post.authorId)) {
         throw new ForbiddenException("You do not have permission to view this post")
       }
@@ -197,7 +196,7 @@ export class PostService {
   }
 
   async getActivityFeed(userId: string, page = 1, limit = 20): Promise<{ posts: Post[]; total: number }> {
-    const connections = await this.usersService.getUserConnections(userId)
+    const connections:any = await this.usersService.getUserConnections(userId)
     const skip = (page - 1) * limit
 
     const [posts, total] = await this.postRepository.getActivityFeed(userId, connections, skip, limit)
@@ -218,7 +217,7 @@ export class PostService {
     }
 
     if (post.privacy === PostPrivacy.CONNECTIONS && post.authorId !== userId) {
-      const connections = await this.usersService.getUserConnections(userId)
+      const connections:any = await this.usersService.getUserConnections(userId)
       if (!connections.includes(post.authorId)) {
         throw new ForbiddenException("You do not have permission to react to this post")
       }

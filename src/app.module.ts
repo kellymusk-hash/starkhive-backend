@@ -17,6 +17,7 @@ import { PaymentModule } from './payment/payment.module';
 import { AuthModule } from './auth/auth.module';
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 import { PostModule } from './post/post.module';
+import { PostService } from './post/post.service';
 dotenv.config();
 
 @Module({
@@ -53,7 +54,7 @@ dotenv.config();
         FreelancerProfileModule,
         PostModule,
     ],
-    providers: [RolesGuard, PermissionGuard, PermissionService],
+    providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {
