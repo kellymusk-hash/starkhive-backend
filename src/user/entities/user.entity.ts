@@ -1,7 +1,17 @@
+/* eslint-disable prettier/prettier */
 import { IsEmail, IsNotEmpty, Length } from 'class-validator';
 import { Contract } from 'src/contract/entities/contract.entity';
 import { Payment } from 'src/payment/entities/payment.entity';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
+import { Session } from 'src/sessions/entities/session.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Index,
+  OneToMany,
+} from 'typeorm';
 
 @Entity('users')
 @Index(['username', 'email'])
@@ -11,7 +21,7 @@ export class User {
 
   @Column({ unique: true })
   @IsNotEmpty()
-  @Length(3, 20)  
+  @Length(3, 20)
   username: string;
 
   @Column({ unique: true })
@@ -20,7 +30,7 @@ export class User {
   email: string;
 
   @Column({ unique: true })
-  @IsNotEmpty()  
+  @IsNotEmpty()
   walletAddress: string;
 
   @OneToMany(() => Contract, (contract) => contract.user)
@@ -29,6 +39,8 @@ export class User {
   @OneToMany(() => Payment, (payment) => payment.user)
   payments: Payment[];
 
+  @OneToMany(() => Session, (session) => session.user)
+  sessions: Session[];
 
   @CreateDateColumn()
   createdAt: Date;
