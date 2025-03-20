@@ -10,10 +10,10 @@ import {
     ManyToMany,
     JoinTable,
   } from "typeorm"
-  import { PostReaction } from "./post-reaction.entity"
   import { PostImage } from "./post-image.entity"
   import { Hashtag } from "./hashtag.entity"
 import { User } from "src/user/entities/user.entity"
+import { PostReaction } from "./post-reaction.entity"
   
   export enum PostPrivacy {
     PUBLIC = "public",
