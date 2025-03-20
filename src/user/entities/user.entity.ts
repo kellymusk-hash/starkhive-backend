@@ -4,6 +4,7 @@ import { Payment } from 'src/payment/entities/payment.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
 import { OneToOne } from 'typeorm';
 import { FreelancerProfile } from 'src/freelancer-profile/entities/freelancer-profile.entity';
+import { Post } from 'src/post/entities/post.entity';
 
 
 @Entity('users')
@@ -32,6 +33,11 @@ export class User {
   @OneToMany(() => Payment, (payment) => payment.user)
   payments: Payment[];
 
+  @OneToMany(
+    () => Post,
+    (post) => post.author,
+  )
+  posts: Post[]
 
   @CreateDateColumn()
   createdAt: Date;
