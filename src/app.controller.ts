@@ -11,4 +11,9 @@ export class AppController {
   serveStaticFile(@Res() res: Response) {
     res.sendFile(join(__dirname, '..', 'public', 'index.html'));
   }
+
+  @Get()
+  getHello(): string {
+    return this.appService.getHello();
+  }
 }
