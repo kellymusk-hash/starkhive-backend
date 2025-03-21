@@ -18,6 +18,8 @@ import { AuthModule } from './auth/auth.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationSettingsModule } from './notification-settings/notification-settings.module';
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
+import { PostModule } from './post/post.module';
+import { PostService } from './post/post.service';
 dotenv.config();
 
 @Module({
@@ -54,8 +56,9 @@ dotenv.config();
         NotificationsModule,
         NotificationSettingsModule,
         FreelancerProfileModule,
+        PostModule,
     ],
-    providers: [RolesGuard, PermissionGuard, PermissionService],
+    providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {

@@ -1,0 +1,61 @@
+
+### Create a new post
+POST http://localhost:3000/posts
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "content": "Testing my new post with #hashtag and @mention",
+  "privacy": "public",
+  "images": [
+    {
+      "url": "https://example.com/image.jpg",
+      "caption": "Test image",
+      "altText": "A test image"
+    }
+  ]
+}
+
+### Get activity feed
+GET http://localhost:3000/posts/feed?page=1&limit=10
+Authorization: Bearer {{token}}
+
+### Get a post by ID
+GET http://localhost:3000/posts/post_id_here
+Authorization: Bearer {{token}}
+
+### Update a post
+PATCH http://localhost:3000/posts/post_id_here
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "content": "Updated content with #newhashtag",
+  "privacy": "connections"
+}
+
+### React to a post
+POST http://localhost:3000/posts/post_id_here/reactions
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "type": "like"
+}
+
+### Share/Repost a post
+POST http://localhost:3000/posts/post_id_here/share
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "content": "Check out this post!"
+}
+
+### Get trending hashtags
+GET http://localhost:3000/posts/trending-hashtags
+Authorization: Bearer {{token}}
+
+### Delete a post
+DELETE http://localhost:3000/posts/post_id_here
+Authorization: Bearer {{token}}
