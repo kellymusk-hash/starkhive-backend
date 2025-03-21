@@ -15,6 +15,8 @@ import * as dotenv from 'dotenv';
 import { ContractModule } from './contract/contract.module';
 import { PaymentModule } from './payment/payment.module';
 import { AuthModule } from './auth/auth.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { NotificationSettingsModule } from './notification-settings/notification-settings.module';
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 import { PostModule } from './post/post.module';
 import { PostService } from './post/post.service';
@@ -51,6 +53,8 @@ dotenv.config();
         UserModule,
         ContractModule,
         PaymentModule,
+        NotificationsModule,
+        NotificationSettingsModule,
         FreelancerProfileModule,
         PostModule,
     ],
