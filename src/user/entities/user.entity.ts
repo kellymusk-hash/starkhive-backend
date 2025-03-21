@@ -3,6 +3,9 @@ import { Contract } from 'src/contract/entities/contract.entity';
 import { NotificationSettings } from 'src/notification-settings/entities/notification-settings.entity';
 import { Payment } from 'src/payment/entities/payment.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
+import { OneToOne } from 'typeorm';
+import { FreelancerProfile } from 'src/freelancer-profile/entities/freelancer-profile.entity';
+
 
 @Entity('users')
 @Index(['username', 'email'])
@@ -38,4 +41,7 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToOne(() => FreelancerProfile, (freelancerProfile) => freelancerProfile.user, { cascade: true })
+freelancerProfile: FreelancerProfile;
 }
