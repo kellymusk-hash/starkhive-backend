@@ -2,7 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike } from 'typeorm';
 import { CompanyPosting } from './entities/company-posting.entity';
-import { CreateCompanyDto } from './dto/create-company.dto';
+import { CreateCompanyPostingDto } from './dto/create-company-posting.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Injectable()
@@ -82,7 +82,7 @@ export class CompanyPostingsService {
     return company;
   }
 
-  async create(createCompanyDto: CreateCompanyDto) {
+  async create(createCompanyDto: CreateCompanyPostingDto) {
     const newCompany = this.companyRepository.create(createCompanyDto);
     return await this.companyRepository.save(newCompany);
   }

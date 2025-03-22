@@ -8,5 +8,6 @@ import { FreelancerPosting } from './entities/freelancer-posting.entity';
   imports: [TypeOrmModule.forFeature([FreelancerPosting])],
   controllers: [FreelancerPostingsController],
   providers: [FreelancerPostingsService],
+  exports: [FreelancerPostingsService],
 })
 export class FreelancerPostingsModule {}

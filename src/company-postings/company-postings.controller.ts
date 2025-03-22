@@ -9,7 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { CompanyPostingsService } from './company-postings.service';
-import { CreateCompanyDto } from './dto/create-company.dto';
+import { CreateCompanyPostingDto } from './dto/create-company-posting.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @Controller('company-postings')
@@ -49,7 +49,7 @@ export class CompanyPostingsController {
   }
 
   @Post()
-  create(@Body() createCompanyDto: CreateCompanyDto) {
+  create(@Body() createCompanyDto: CreateCompanyPostingDto) {
     return this.companyPostingsService.create(createCompanyDto);
   }
 
