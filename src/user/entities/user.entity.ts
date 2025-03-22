@@ -6,9 +6,9 @@ import { Payment } from 'src/payment/entities/payment.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index, OneToMany, OneToOne } from 'typeorm';
 import { FreelancerProfile } from 'src/freelancer-profile/entities/freelancer-profile.entity';
 import { Post } from 'src/post/entities/post.entity';
-import { Content } from '@src/content Entity/entities/content.entity';
 import { AuditLog } from '@src/audit/entitites/audit-log.entity';
 import { Report } from '@src/reporting/entities/report.entity';
+import { Content } from '@src/content/entities/content.entity';
 
 @Entity('users')
 @Index(['username', 'email'])
