@@ -1,9 +1,11 @@
-import { IsEmail, IsNotEmpty, Length } from 'class-validator';
+import { IsBoolean, IsDate, IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
 import { Contract } from 'src/contract/entities/contract.entity';
+import { NotificationSettings } from 'src/notification-settings/entities/notification-settings.entity';
 import { Payment } from 'src/payment/entities/payment.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index, OneToMany } from 'typeorm';
 import { OneToOne } from 'typeorm';
 import { FreelancerProfile } from 'src/freelancer-profile/entities/freelancer-profile.entity';
+import { Post } from 'src/post/entities/post.entity';
 
 
 @Entity('users')
@@ -14,31 +16,55 @@ export class User {
 
   @Column({ unique: true })
   @IsNotEmpty()
-  @Length(3, 20)  
-  username: string;
+  @Length(3, 20)
+  username?: string;
 
   @Column({ unique: true })
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
+  @Column()
+  @IsNotEmpty()
+  @IsEmail()
+  password: string;
+
   @Column({ unique: true })
-  @IsNotEmpty()  
-  walletAddress: string;
+  @IsNotEmpty()
+  walletAddress?: string;
 
   @OneToMany(() => Contract, (contract) => contract.user)
-  contracts: Contract[];
+  contracts?: Contract[];
 
   @OneToMany(() => Payment, (payment) => payment.user)
-  payments: Payment[];
+  payments?: Payment[];
 
+  @OneToMany(
+    () => Post,
+    (post) => post.author,
+  )
+  posts: Post[]
+  @OneToMany(() => NotificationSettings, (notification) => notification.user)
+  notificationSettings: NotificationSettings[];
+
+  @IsBoolean()
+  isEmailVerified: boolean
+
+  @IsString()
+  emailTokenVerification?: string
+
+  @IsBoolean()
+  resetToken: string
+
+  @IsDate()
+  tokenExpires: Date
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt?: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt?: Date;
 
   @OneToOne(() => FreelancerProfile, (freelancerProfile) => freelancerProfile.user, { cascade: true })
-freelancerProfile: FreelancerProfile;
+  freelancerProfile?: FreelancerProfile;
 }

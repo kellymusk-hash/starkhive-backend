@@ -4,12 +4,16 @@ import { Repository, ILike } from 'typeorm';
 import { JobPosting } from './entities/job-posting.entity';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class JobPostingsService {
   constructor(
     @InjectRepository(JobPosting)
     private readonly jobRepository: Repository<JobPosting>,
+
+    /** Injecting Notification service */
+    private readonly notificationService: NotificationsService,
   ) {}
 
   async findAll(
@@ -63,22 +67,49 @@ export class JobPostingsService {
 
   async create(createJobDto: CreateJobDto) {
     const newJob = this.jobRepository.create(createJobDto);
-    return await this.jobRepository.save(newJob);
+    const savedJob = await this.jobRepository.save(newJob);
+
+    /**  Send a notification when a job is posted */
+    await this.notificationService.create({
+      userId: 1, // Replace this with the actual job poster's userId
+      type: 'job_posted',
+      message: `A new job '${savedJob.title}' has been posted!`,
+    });
+
+    return savedJob;
   }
 
   async update(id: number, updateJobDto: UpdateJobDto) {
-    const result = await this.jobRepository.update(id, updateJobDto);
-    if (result.affected === 0) {
-      throw new HttpException('Job not found', HttpStatus.NOT_FOUND);
-    }
-    return this.findOne(id);
+    const job = await this.findOne(id); // Ensure job exists before updating
+
+    await this.jobRepository.update(id, updateJobDto);
+
+    /** Notify users about the job update */
+    await this.notificationService.create({
+      userId: 1, // Replace with the job poster’s userId
+      type: 'job_updated',
+      message: `The job '${job.title}' has been updated.`,
+    });
+
+    return { message: 'Job updated successfully' };
   }
 
+  /** Remove a job posting and notify */
   async remove(id: number) {
+    const job = await this.findOne(id); // Ensure job exists before deleting
+
     const result = await this.jobRepository.delete(id);
     if (result.affected === 0) {
       throw new HttpException('Job not found', HttpStatus.NOT_FOUND);
     }
+
+    /** Notify users about job deletion */
+    await this.notificationService.create({
+      userId: 1, // Replace with the job poster’s userId
+      type: 'job_deleted',
+      message: `The job '${job.title}' has been deleted.`,
+    });
+
     return { message: 'Job deleted successfully' };
   }
 }

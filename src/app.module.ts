@@ -17,7 +17,11 @@ import * as dotenv from 'dotenv';
 import { ContractModule } from './contract/contract.module';
 import { PaymentModule } from './payment/payment.module';
 import { AuthModule } from './auth/auth.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { NotificationSettingsModule } from './notification-settings/notification-settings.module';
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
+import { PostModule } from './post/post.module';
+import { PostService } from './post/post.service';
 dotenv.config();
 
 @Module({
@@ -43,18 +47,19 @@ dotenv.config();
         autoLoadEntities: true,
       }),
     }),
-
-    // Import modules
-    AuthModule,
-    JobPostingsModule,
-    FreelancerPostingsModule,
-    CompanyPostingsModule,
-    CompanyModule,
-    UserModule,
-    ContractModule,
-    PaymentModule,
-  ],
-  providers: [RolesGuard, PermissionGuard, PermissionService],
+        // Import modules
+        AuthModule,
+        JobPostingsModule,
+        CompanyModule,
+        UserModule,
+        ContractModule,
+        PaymentModule,
+        NotificationsModule,
+        NotificationSettingsModule,
+        FreelancerProfileModule,
+        PostModule,
+    ],
+    providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 
 })
 export class AppModule {
