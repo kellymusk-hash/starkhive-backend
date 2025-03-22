@@ -1,6 +1,13 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
-export class CreateFreelancerProfile1700000000001 implements MigrationInterface {
+export class CreateFreelancerProfile1700000000001
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -55,18 +62,24 @@ export class CreateFreelancerProfile1700000000001 implements MigrationInterface 
             onDelete: 'CASCADE',
           }),
         ],
-      })
+      }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // Drop foreign key explicitly before dropping the table
+    // Get the table if it exists
     const table = await queryRunner.getTable('freelancer_profiles');
-    const foreignKey = table.foreignKeys.find((fk) => fk.columnNames.includes('user_id'));
-    if (foreignKey) {
-      await queryRunner.dropForeignKey('freelancer_profiles', foreignKey);
-    }
+    if (table) {
+      // Drop foreign key explicitly before dropping the table
+      const foreignKey = table.foreignKeys.find((fk) =>
+        fk.columnNames.includes('user_id'),
+      );
+      if (foreignKey) {
+        await queryRunner.dropForeignKey('freelancer_profiles', foreignKey);
+      }
 
-    await queryRunner.dropTable('freelancer_profiles');
+      // Drop the table if it exists
+      await queryRunner.dropTable('freelancer_profiles');
+    }
   }
 }
