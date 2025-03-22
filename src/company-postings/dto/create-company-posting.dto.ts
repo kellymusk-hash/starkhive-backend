@@ -1,6 +1,6 @@
 import { IsString, IsOptional, IsNumber, IsArray } from 'class-validator';
 
-export class CreateCompanyDto {
+export class CreateCompanyPostingDto {
   @IsString()
   name: string;
 
