@@ -6,13 +6,11 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UtilService } from './utils/utils.function';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserRepository } from '@src/user/repositories/user.repositories';
-import { UserModule } from '@src/user/user.module';
+import { User } from '@src/user/entities/user.entity'; // Adjust path if needed
 
 @Module({
   imports: [
-    UserModule,
-    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([User]), // Ensure User is part of this module
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
