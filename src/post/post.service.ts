@@ -125,32 +125,30 @@ export class PostService {
       throw new BadRequestException('Reposts cannot be edited');
     }
 
-    const updates: Partial<Post> = {};
-
+    // Apply updates
     if (updatePostDto.content) {
-      updates.content = updatePostDto.content;
+      post.content = updatePostDto.content;
 
-      // Update hashtags if content changed
+      // Update hashtags
       const extractedHashtags = this.extractHashtags(updatePostDto.content);
       const allHashtags = [
         ...new Set([...(updatePostDto.hashtags || []), ...extractedHashtags]),
       ];
-      const hashtags = await this.hashtagRepository.findOrCreate(allHashtags);
-      updates.hashtags = hashtags;
+      post.hashtags = await this.hashtagRepository.findOrCreate(allHashtags);
 
       // Update metadata
-      updates.metadata = {
-        links: post.metadata.links || [],
+      post.metadata = {
+        links: post.metadata?.links || [],
         mentions: this.extractMentions(updatePostDto.content),
       };
     }
 
     if (updatePostDto.privacy) {
-      updates.privacy = updatePostDto.privacy;
+      post.privacy = updatePostDto.privacy;
     }
 
-    // Update post
-    const updatedPost = await this.postRepository.update(postId, updates);
+    // ✅ Use `.save()` instead of `.update()`
+    const updatedPost = await this.postRepository.save(post);
 
     // Handle image updates
     if (updatePostDto.images) {
@@ -170,7 +168,7 @@ export class PostService {
 
       if (images.length > 0) {
         await this.postImageRepository.save(images);
-        updatedPost.images = images;
+        updatedPost.images = images; // ✅ `updatedPost` is now guaranteed to exist
       }
     }
 

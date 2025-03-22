@@ -16,6 +16,9 @@ export class PostRepository {
       relations: ['author', 'images', 'hashtags'],
     });
   }
+  async save(post: Post): Promise<Post> {
+    return this.repository.save(post);
+  }
 
   async create(post: Partial<Post>): Promise<Post> {
     const newPost = this.repository.create(post);
