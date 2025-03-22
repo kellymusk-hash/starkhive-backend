@@ -3,7 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as nodemailer from 'nodemailer';
-import Twilio = require('twilio');
+// import Twilio = require('twilio');
 import { NotificationSettingsService } from '../notification-settings/notification-settings.service';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
@@ -16,7 +16,10 @@ export class NotificationsService {
     auth: { user: 'your-email@gmail.com', pass: 'your-password' },
   });
 
-  private twilioClient = Twilio('TWILIO_ACCOUNT_SID', 'TWILIO_AUTH_TOKEN');
+  // private twilioClient = Twilio(
+  //   process.env.TWILIO_ACCOUNT_SID,
+  //   process.env.TWILIO_AUTH_TOKEN,
+  // );
 
   constructor(
     private readonly notificationSettingsService: NotificationSettingsService,
@@ -37,7 +40,7 @@ export class NotificationsService {
     const settings = await this.notificationSettingsService.getSettings(userId);
     if (settings.email)
       await this.sendEmail('user@example.com', 'New Notification', message);
-    if (settings.sms) await this.sendSMS('+1234567890', message);
+    // if (settings.sms) await this.sendSMS('+1234567890', message);
     if (settings.push) this.sendPushNotification(userId, message);
 
     return notification;
@@ -76,13 +79,13 @@ export class NotificationsService {
   }
 
   /**Send SMS */
-  public async sendSMS(to: string, message: string) {
-    await this.twilioClient.messages.create({
-      body: message,
-      from: 'your-twilio-number',
-      to,
-    });
-  }
+  // public async sendSMS(to: string, message: string) {
+  //   // await this.twilioClient.messages.create({
+  //   //   body: message,
+  //   //   from: 'your-twilio-number',
+  //   //   to,
+  //   // });
+  // }
 
   /** Mock Push Notification */
   private sendPushNotification(userId: number, message: string) {

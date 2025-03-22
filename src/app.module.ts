@@ -23,7 +23,12 @@ dotenv.config();
     // Load environment variables globally
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env.development', '.env.production', '.env.test'],
+      envFilePath: [
+        '.env.development',
+        '.env.production',
+        '.env.test',
+        '.env.local',
+      ],
     }),
 
     // Configure TypeORM with environment variables
