@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Module, MiddlewareConsumer } from '@nestjs/common';
+import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JobPostingsModule } from './job-postings/job-postings.module';
@@ -20,6 +20,7 @@ import { NotificationSettingsModule } from './notification-settings/notification
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 import { PostModule } from './post/post.module';
 import { PostService } from './post/post.service';
+import { ApiUsageMiddleware } from './auth/middleware/api-usage.middleware';
 dotenv.config();
 
 @Module({
@@ -62,6 +63,6 @@ dotenv.config();
 })
 export class AppModule {
     configure(consumer: MiddlewareConsumer) {
-        consumer.apply(AuthMiddleware);
+        consumer.apply(AuthMiddleware,ApiUsageMiddleware).forRoutes({ path: '*', method: RequestMethod.ALL });
     }
 }
