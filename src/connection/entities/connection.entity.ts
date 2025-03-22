@@ -3,8 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } f
 
 export enum ConnectionStatus {
   PENDING = 'pending',
-  CONNECTED = 'connected',
-  DECLINED = 'declined'
+  CONNECTED = 'connected'
 }
 
 @Entity()

@@ -5,8 +5,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UtilService } from './utils/utils.function';
-import { UserRepository } from '@src/user/repositories/user.repositories';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from '@src/user/user.module';
 
 @Module({
     imports: [
@@ -18,7 +17,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
             }),
             inject: [ConfigService],
         }),
-        TypeOrmModule.forFeature([UserRepository])
+        UserModule
     ],
     providers: [AuthService, JwtStrategy, UtilService],
     controllers: [AuthController],

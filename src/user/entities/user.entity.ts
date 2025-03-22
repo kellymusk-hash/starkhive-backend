@@ -22,7 +22,7 @@ import { OneToOne } from 'typeorm';
 import { FreelancerProfile } from 'src/freelancer-profile/entities/freelancer-profile.entity';
 import { Post } from 'src/post/entities/post.entity';
 import { Connection } from '@src/connection/entities/connection.entity';
-import { Notification } from '@src/connection/entities/notification.entity';
+import { ConnectionNotification } from '@src/notifications/entities/connection-notification.entity';
 
 @Entity('users')
 @Index(['username', 'email'])
@@ -30,8 +30,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
-  @IsNotEmpty()
+  @Column({ unique: true, nullable: true })
   @Length(3, 20)
   username?: string;
 
@@ -45,7 +44,7 @@ export class User {
   @IsEmail()
   password: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true }) 
   @IsNotEmpty()
   walletAddress?: string;
 
@@ -91,11 +90,11 @@ export class User {
   @OneToMany(() => Connection, (connection) => connection.recipient)
   receivedConnections: Connection[];
 
-  @OneToMany(() => Notification, (notification) => notification.user, {
+  @OneToMany(() => ConnectionNotification, (notification) => notification.user, {
     cascade: true,
   })
   notifications: Notification[];
 
   @Column({ default: 'public' })
-  connectionPrivacy: string; 
+  connectionPrivacy: string;
 }

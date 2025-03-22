@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } f
 import { User } from '../../user/entities/user.entity';
 
 @Entity()
-export class Notification {
+export class ConnectionNotification {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
