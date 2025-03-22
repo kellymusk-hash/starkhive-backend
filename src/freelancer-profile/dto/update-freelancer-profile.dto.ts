@@ -1,4 +1,17 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateFreelancerProfileDto } from './create-freelancer-profile.dto';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
-export class UpdateFreelancerProfileDto extends PartialType(CreateFreelancerProfileDto) {}
+export class UpdateFreelancerProfileDto {
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  skills?: string[];
+
+  @IsOptional()
+  @IsString()
+  experience?: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  portfolioLinks?: string[];
+}
