@@ -4,6 +4,7 @@ import { NotificationSettingsController } from './notification-settings.controll
 
 @Module({
   providers: [NotificationSettingsService],
-  controllers: [NotificationSettingsController]
+  controllers: [NotificationSettingsController],
+  exports: [NotificationSettingsService], // Make service available for other modules to import and use.
 })
 export class NotificationSettingsModule {}
