@@ -1,4 +1,4 @@
-import { Module, MiddlewareConsumer } from '@nestjs/common';
+import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JobPostingsModule } from './job-postings/job-postings.module';
@@ -18,6 +18,19 @@ import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile
 import { PostModule } from './post/post.module';
 import { EndorsementModule } from './endorsement/endorsement.module';
 // import { NotificationsService } from './notifications/notifications.service';
+import { PolicyModule } from './policy/policy.module';
+import { PolicyReportingModule } from './policy-reporting/policy-reporting.module';
+import { PolicyVersionModule } from './policy-version/policy-version.module';
+import { PolicyViolationModule } from './policy-violation/policy-violation.module';
+import { UserConsent } from './user-censent/user-censent.entity';
+import { ApiUsageMiddleware } from './auth/middleware/api-usage.middleware';
+import { AuditModule } from './audit/audit.module';
+import { ContentModule } from './content/content.module';
+import { ReportingModule } from './reporting/reporting.module';
+import { AnalyticsModule } from './analytics/analytics.module';
+import { ConfigurationModule } from './configuration/configuraton.module';
+import { HealthModule } from './health/health.module';
+import { ConnectionModule } from './connection/connection.module';
 dotenv.config();
 
 @Module({
@@ -61,6 +74,18 @@ dotenv.config();
     FreelancerProfileModule,
     PostModule,
     EndorsementModule,
+    PolicyModule,
+    PolicyReportingModule,
+    PolicyVersionModule,
+    PolicyViolationModule,
+    UserConsent,
+    AuditModule,
+    ConfigurationModule,
+    ContentModule,
+    ReportingModule,
+    AnalyticsModule,
+    HealthModule,
+    ConnectionModule
   ],
   providers: [
     RolesGuard,
@@ -72,6 +97,8 @@ dotenv.config();
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware);
+    consumer
+      .apply(AuthMiddleware, ApiUsageMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
