@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
-import { User } from '../users/user.entity'; // Assuming there's a User entity
+import { User } from '../user/entities/user.entity'; // Assuming there's a User entity
+import { Message } from '../messages/message.entity'; // Add this import if Message is needed
 
 @Entity()
 export class Conversation {

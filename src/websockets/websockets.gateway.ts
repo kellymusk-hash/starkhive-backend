@@ -1,5 +1,6 @@
-import { WebSocketGateway, WebSocketServer, SubscribeMessage, WebSocket } from '@nestjs/websockets';
-import { Message } from '../../../src/messages/message.entity';
+import { WebSocketGateway, WebSocketServer, SubscribeMessage } from '@nestjs/websockets';
+import { Socket } from 'socket.io';
+import { Message } from '../messages/message.entity';
 import { WebsocketsService } from './websockets.service';
 import { Server } from 'socket.io';
 
@@ -10,19 +11,16 @@ export class WebsocketsGateway {
 
   constructor(private readonly websocketsService: WebsocketsService) {}
 
-  @SubscribeMessage('sendMessage')
-  handleMessage(client: WebSocket, payload: Message): void {
-    this.websocketsService.sendMessage(payload);
+  handleMessage(client: Socket, payload: Message): void {
+    this.websocketsService.sendMessage(payload.content);
     this.server.emit('messageReceived', payload);
   }
 
-  @SubscribeMessage('joinRoom')
-  handleJoinRoom(client: WebSocket, room: string): void {
+  handleJoinRoom(client: Socket, room: string): void {
     client.join(room);
   }
 
-  @SubscribeMessage('leaveRoom')
-  handleLeaveRoom(client: WebSocket, room: string): void {
+  handleLeaveRoom(client: Socket, room: string): void {
     client.leave(room);
   }
 }
