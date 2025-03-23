@@ -16,6 +16,11 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationSettingsModule } from './notification-settings/notification-settings.module';
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 import { PostModule } from './post/post.module';
+import { PolicyModule } from './policy/policy.module';
+import { PolicyReportingModule } from './policy-reporting/policy-reporting.module';
+import { PolicyVersionModule } from './policy-version/policy-version.module';
+import { PolicyViolationModule } from './policy-violation/policy-violation.module';
+import { UserConsent } from './user-censent/user-censent.entity';
 dotenv.config();
 
 @Module({
@@ -53,6 +58,11 @@ dotenv.config();
     NotificationSettingsModule,
     FreelancerProfileModule,
     PostModule,
+    PolicyModule,
+    PolicyReportingModule,
+    PolicyVersionModule,
+    PolicyViolationModule,
+    UserConsent,
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService],
 })
