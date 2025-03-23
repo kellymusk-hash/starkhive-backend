@@ -23,6 +23,7 @@ export class NotificationsService {
 
   constructor(
     private readonly notificationSettingsService: NotificationSettingsService,
+    
     @InjectRepository(JobNotification)
     private readonly notificationRepository: Repository<JobNotification>,
   ) {}
