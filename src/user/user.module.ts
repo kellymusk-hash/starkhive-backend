@@ -12,6 +12,6 @@ import { Content } from '@src/content/entities/content.entity';
   imports: [TypeOrmModule.forFeature([User,Content,Report,AuditLog]),AuditModule], // Ensure User is included here
   controllers: [UserController],
   providers: [UserService],
-  exports: [UserService],
+  exports: [UserService, TypeOrmModule],
 })
-export class UserModule {}
+export class UserModule {} 

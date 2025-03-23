@@ -5,15 +5,16 @@ import { NotificationSettingsModule } from '@src/notification-settings/notificat
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JobNotification } from './entities/job-notification.entities';
 import { PolicyVersionModule } from '@src/policy-version/policy-version.module';
+import { ConnectionNotification } from './entities/connection-notification.entity';
 
 @Module({
   imports: [
     NotificationSettingsModule,
-    TypeOrmModule.forFeature([JobNotification]),
+    TypeOrmModule.forFeature([JobNotification, ConnectionNotification]),
     forwardRef(() => PolicyVersionModule),
   ],
   providers: [NotificationsService],
   controllers: [NotificationsController],
-  exports: [NotificationsService], // Make service available for other modules to import and use.
+  exports: [NotificationsService],
 })
 export class NotificationsModule {}
