@@ -1,15 +1,22 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import type { Repository } from 'typeorm';
 import { PolicyVersion } from './policy-version.entity';
 import type { CreatePolicyVersionDto } from './dtos/create-policy-version.dto';
-import type { NotificationsService } from '../notifications/notifications.service';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class PolicyVersionService {
   constructor(
     @InjectRepository(PolicyVersion)
     private policyVersionRepository: Repository<PolicyVersion>,
+
+    @Inject(forwardRef(() => NotificationsService))
     private notificationService: NotificationsService,
   ) {}
 

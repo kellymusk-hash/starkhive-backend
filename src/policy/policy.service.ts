@@ -1,16 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import type { Repository } from 'typeorm';
 import { Policy, PolicyStatus } from './policy.entity';
 import type { CreatePolicyDto } from './dtos/create-policy.dto';
 import type { UpdatePolicyDto } from './dtos/update-policy.dto';
-import type { PolicyVersionService } from '../policy-version/policy-version.service';
+import { PolicyVersionService } from '../policy-version/policy-version.service';
 
 @Injectable()
 export class PolicyService {
   constructor(
     @InjectRepository(Policy)
     private policyRepository: Repository<Policy>,
+
+    // @Inject(PolicyVersionService)
     private policyVersionService: PolicyVersionService,
   ) {}
 

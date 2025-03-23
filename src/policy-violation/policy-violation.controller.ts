@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import type { PolicyViolationService } from './policy-violation.service';
-import type { CreatePolicyViolationDto } from './dtos/policy-violation.dto';
-import type { ViolationStatus } from './policy-violation.entity';
+import { PolicyViolationService } from './policy-violation.service';
+import { CreatePolicyViolationDto } from './dtos/policy-violation.dto';
+import { ViolationStatus } from './policy-violation.entity';
 
 @Controller('policy-violations')
 export class PolicyViolationController {

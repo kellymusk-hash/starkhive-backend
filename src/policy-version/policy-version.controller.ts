@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import type { PolicyVersionService } from './policy-version.service';
-import type { CreatePolicyVersionDto } from './dtos/create-policy-version.dto';
+import { PolicyVersionService } from './policy-version.service';
+import { CreatePolicyVersionDto } from './dtos/create-policy-version.dto';
 
 @Controller('policy-versions')
 export class PolicyVersionController {

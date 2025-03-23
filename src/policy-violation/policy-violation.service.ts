@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import type { Repository } from 'typeorm';
 import {
@@ -8,7 +8,7 @@ import {
 } from './policy-violation.entity';
 import type { CreatePolicyViolationDto } from './dtos/policy-violation.dto';
 import { Policy } from '../policy/policy.entity';
-import type { NotificationsService } from '../notifications/notifications.service';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class PolicyViolationService {
@@ -17,6 +17,8 @@ export class PolicyViolationService {
     private policyViolationRepository: Repository<PolicyViolation>,
     @InjectRepository(Policy)
     private policyRepository: Repository<Policy>,
+
+    @Inject(forwardRef(() => NotificationsService))
     private notificationService: NotificationsService,
   ) {}
 
@@ -113,6 +115,10 @@ export class PolicyViolationService {
       relations: ['policy', 'user'],
       order: { detectedAt: 'DESC' },
     });
+  }
+
+  async findOne(id: string): Promise<any> {
+    return this.policyViolationRepository.findOneBy({ id });
   }
 
   async findByUser(userId: string): Promise<PolicyViolation[]> {

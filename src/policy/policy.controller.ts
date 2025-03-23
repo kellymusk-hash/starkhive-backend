@@ -9,9 +9,9 @@ import {
   HttpStatus,
   HttpCode,
 } from '@nestjs/common';
-import type { PolicyService } from './policy.service';
-import type { CreatePolicyDto } from './dtos/create-policy.dto';
-import type { UpdatePolicyDto } from './dtos/update-policy.dto';
+import { PolicyService } from './policy.service';
+import { CreatePolicyDto } from './dtos/create-policy.dto';
+import { UpdatePolicyDto } from './dtos/update-policy.dto';
 
 @Controller('policies')
 export class PolicyController {

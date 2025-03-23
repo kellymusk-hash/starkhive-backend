@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import type { PolicyReportingService } from './policy-reporting.service';
-import type { ViolationSeverity } from '../policy-violation/policy-violation.entity';
+import { PolicyReportingService } from './policy-reporting.service';
+import { ViolationSeverity } from '../policy-violation/policy-violation.entity';
 
 @Controller('policy-reporting')
 export class PolicyReportingController {
