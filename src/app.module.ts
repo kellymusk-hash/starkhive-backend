@@ -16,6 +16,11 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationSettingsModule } from './notification-settings/notification-settings.module';
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 import { PostModule } from './post/post.module';
+import { PolicyModule } from './policy/policy.module';
+import { PolicyReportingModule } from './policy-reporting/policy-reporting.module';
+import { PolicyVersionModule } from './policy-version/policy-version.module';
+import { PolicyViolationModule } from './policy-violation/policy-violation.module';
+import { UserConsent } from './user-censent/user-censent.entity';
 import { ApiUsageMiddleware } from './auth/middleware/api-usage.middleware';
 import { AuditModule } from './audit/audit.module';
 import { ContentModule } from './content/content.module';
@@ -66,6 +71,11 @@ dotenv.config();
     NotificationSettingsModule,
     FreelancerProfileModule,
     PostModule,
+    PolicyModule,
+    PolicyReportingModule,
+    PolicyVersionModule,
+    PolicyViolationModule,
+    UserConsent,
     AuditModule,
     ConfigurationModule,
     ContentModule,
@@ -78,6 +88,8 @@ dotenv.config();
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware,ApiUsageMiddleware).forRoutes({ path: '*', method: RequestMethod.ALL });
+    consumer
+      .apply(AuthMiddleware, ApiUsageMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
