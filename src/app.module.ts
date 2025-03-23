@@ -38,7 +38,12 @@ dotenv.config();
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env.development', '.env.production', '.env.test'],
+      envFilePath: [
+        '.env.development',
+        '.env.production',
+        '.env.test',
+        '.env.local',
+      ],
     }),
 
     TypeOrmModule.forRootAsync({
@@ -80,7 +85,7 @@ dotenv.config();
     ReportingModule,
     AnalyticsModule,
     HealthModule,
-    ConnectionModule,
+    ConnectionModule
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })
