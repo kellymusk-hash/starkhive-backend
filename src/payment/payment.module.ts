@@ -33,6 +33,6 @@ import { PermissionService } from 'src/auth/services/permission.service';
     PermissionService,
     PaymentRepository,
   ],
-  exports: [PaymentService],
+  exports: [PaymentService, PermissionService],
 })
 export class PaymentModule {}
