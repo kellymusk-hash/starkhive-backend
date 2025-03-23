@@ -16,6 +16,8 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationSettingsModule } from './notification-settings/notification-settings.module';
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 import { PostModule } from './post/post.module';
+import { EndorsementModule } from './endorsement/endorsement.module';
+// import { NotificationsService } from './notifications/notifications.service';
 import { PolicyModule } from './policy/policy.module';
 import { PolicyReportingModule } from './policy-reporting/policy-reporting.module';
 import { PolicyVersionModule } from './policy-version/policy-version.module';
@@ -72,6 +74,7 @@ dotenv.config();
     NotificationSettingsModule,
     FreelancerProfileModule,
     PostModule,
+    EndorsementModule,
     PolicyModule,
     PolicyReportingModule,
     PolicyVersionModule,
@@ -86,7 +89,13 @@ dotenv.config();
     ConnectionModule,
     ProjectModule
   ],
-  providers: [RolesGuard, PermissionGuard, PermissionService],
+  providers: [
+    RolesGuard,
+    PermissionGuard,
+    PermissionService,
+    // NotificationsService,
+  ],
+  // exports: [NotificationsService]
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
