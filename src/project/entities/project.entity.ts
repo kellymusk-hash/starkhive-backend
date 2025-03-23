@@ -14,6 +14,7 @@ import { Deliverable } from './deliverable.entity';
 import { Task } from './task.entity';
 import { FileAttachment } from './file-attachment.entity';
 import { TimeLog } from './time-log.entity';
+import { Contract } from '../../contract/entities/contract.entity';
 
 export enum ProjectStatus {
   PLANNING = 'planning',
@@ -50,6 +51,9 @@ export class Project {
   @Column({ type: 'decimal', default: 0 })
   budget: number;
 
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  hourlyRate: number;
+
   @Column({ type: 'varchar', length: 50, nullable: true })
   currency: string;
 
@@ -66,6 +70,13 @@ export class Project {
 
   @Column({ name: 'project_manager_id', nullable: true })
   projectManagerId: string;
+
+  @ManyToOne(() => Contract, contract => contract.projects)
+  @JoinColumn()
+  contract: Contract;
+
+  @Column({ nullable: true })
+  contractId: string;
 
   @OneToMany(() => Milestone, (milestone) => milestone.project, {
     cascade: true,
@@ -97,4 +108,4 @@ export class Project {
 
   @UpdateDateColumn()
   updatedAt: Date;
-} 
+}

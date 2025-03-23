@@ -8,6 +8,7 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { User } from '../user/entities/user.entity';
 import { Role } from '../auth/roles.enum';
 import { Buffer } from 'buffer';
+import { StartTrackingDto } from './dto/start-tracking.dto';
 
 @Controller('time-tracking')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -86,5 +87,26 @@ export class TimeTrackingController {
       'Content-Disposition': 'attachment; filename=time-entries.pdf'
     });
     return new StreamableFile(pdf);
+  }
+
+  @Post('tracking/start')
+  @Roles(Role.FREELANCER)
+  async startTracking(
+    @CurrentUser() user: User,
+    @Body() startTrackingDto: StartTrackingDto,
+  ) {
+    return this.timeTrackingService.startTracking(user, startTrackingDto);
+  }
+
+  @Post('tracking/stop')
+  @Roles(Role.FREELANCER)
+  async stopTracking(@CurrentUser() user: User) {
+    return this.timeTrackingService.stopTracking(user.id);
+  }
+
+  @Get('tracking/active')
+  @Roles(Role.FREELANCER)
+  async getActiveTracking(@CurrentUser() user: User) {
+    return this.timeTrackingService.getActiveTracking(user.id);
   }
 }
