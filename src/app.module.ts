@@ -29,6 +29,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { ConfigurationModule } from './configuration/configuraton.module';
 import { HealthModule } from './health/health.module';
 import { ConnectionModule } from './connection/connection.module';
+import { ProjectModule } from './project/project.module';
 dotenv.config();
 
 @Module({
@@ -82,7 +83,8 @@ dotenv.config();
     ReportingModule,
     AnalyticsModule,
     HealthModule,
-    ConnectionModule
+    ConnectionModule,
+    ProjectModule
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService],
 })
