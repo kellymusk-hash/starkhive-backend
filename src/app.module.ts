@@ -23,6 +23,7 @@ import { ReportingModule } from './reporting/reporting.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { ConfigurationModule } from './configuration/configuraton.module';
 import { HealthModule } from './health/health.module';
+import { ConnectionModule } from './connection/connection.module';
 dotenv.config();
 
 @Module({
@@ -71,6 +72,7 @@ dotenv.config();
     ReportingModule,
     AnalyticsModule,
     HealthModule,
+    ConnectionModule
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService],
 })
