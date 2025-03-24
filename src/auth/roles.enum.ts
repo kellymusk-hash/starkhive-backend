@@ -2,7 +2,7 @@
 export enum Role {
   ADMIN = 'admin',
   COMPANY = 'company',
-  FREELANCER = 'freelancer',
+  FREELANCER = 'freelancer',  
 }
 
 export enum Permission {

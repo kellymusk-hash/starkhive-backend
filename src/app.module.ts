@@ -16,6 +16,8 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationSettingsModule } from './notification-settings/notification-settings.module';
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 import { PostModule } from './post/post.module';
+// import { ReportModule } from './report/report.module';
+import { ReportsModule } from './reports/reports.module';
 dotenv.config();
 
 @Module({
@@ -58,6 +60,8 @@ dotenv.config();
     NotificationSettingsModule,
     FreelancerProfileModule,
     PostModule,
+    // ReportModule,
+    ReportsModule,
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService],
 })
