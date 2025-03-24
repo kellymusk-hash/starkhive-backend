@@ -34,6 +34,7 @@ import { ConnectionModule } from './connection/connection.module';
 import { ProjectModule } from './project/project.module';
 import { TimeTrackingModule } from './time-tracking/time-tracking.module';
 import { SearchModule } from './search/search.module';
+import { MessagingModule } from './messaging/messaging.module';
 dotenv.config();
 
 @Module({
@@ -91,7 +92,8 @@ dotenv.config();
     ConnectionModule,
     ProjectModule,
     TimeTrackingModule,
-    SearchModule
+    SearchModule,
+    MessagingModule
   ],
   providers: [
     RolesGuard,
