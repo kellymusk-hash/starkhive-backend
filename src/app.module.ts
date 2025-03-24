@@ -34,6 +34,8 @@ import { ConnectionModule } from './connection/connection.module';
 import { ProjectModule } from './project/project.module';
 import { TimeTrackingModule } from './time-tracking/time-tracking.module';
 import { SearchModule } from './search/search.module';
+import { ErrorTrackingModule } from './error-tracking/error-tracking.module';
+import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-tracking.middleware';
 dotenv.config();
 
 @Module({
@@ -91,7 +93,8 @@ dotenv.config();
     ConnectionModule,
     ProjectModule,
     TimeTrackingModule,
-    SearchModule
+    SearchModule,
+    ErrorTrackingModule
   ],
   providers: [
     RolesGuard,
@@ -103,6 +106,12 @@ dotenv.config();
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
+    // Apply error tracking middleware first to catch all errors
+    consumer
+      .apply(ErrorTrackingMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+
+    // Apply other middleware
     consumer
       .apply(AuthMiddleware, ApiUsageMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
