@@ -33,6 +33,7 @@ import { HealthModule } from './health/health.module';
 import { ConnectionModule } from './connection/connection.module';
 import { ProjectModule } from './project/project.module';
 import { TimeTrackingModule } from './time-tracking/time-tracking.module';
+import { SearchModule } from './search/search.module';
 dotenv.config();
 
 @Module({
@@ -89,7 +90,8 @@ dotenv.config();
     HealthModule,
     ConnectionModule,
     ProjectModule,
-    TimeTrackingModule
+    TimeTrackingModule,
+    SearchModule
   ],
   providers: [
     RolesGuard,
