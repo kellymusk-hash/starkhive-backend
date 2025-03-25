@@ -45,8 +45,8 @@ import { ConnectionModule } from './connection/connection.module';
 import { ProjectModule } from './project/project.module';
 import { TimeTrackingModule } from './time-tracking/time-tracking.module';
 import { SearchModule } from './search/search.module';
+import { CommentModule } from './comment/comment.module';
 import { MessagingModule } from './messaging/messaging.module';
-
 import { ErrorTrackingModule } from './error-tracking/error-tracking.module';
 import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-tracking.middleware';
 import { ReputationModule } from './reputation/reputation.module';
@@ -106,6 +106,7 @@ dotenv.config();
     ProjectModule,
     TimeTrackingModule,
     SearchModule,
+    CommentModule,
     MessagingModule
     ErrorTrackingModule,
    AttachmentsModule,
