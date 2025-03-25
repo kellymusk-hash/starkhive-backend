@@ -27,6 +27,6 @@
       "@tests/*": ["tests/*"]
     }
   },
-  "include": ["src", "tests"],
+  "include": ["src", "tests", "auth.guard.ts"],
   "exclude": ["node_modules", "dist"]
 }

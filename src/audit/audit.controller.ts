@@ -1,7 +1,7 @@
 
 // 31. Create AuditController (src/audit/audit.controller.ts)
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+//import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AuditService } from './audit.service';
 
 @Controller('audit')
