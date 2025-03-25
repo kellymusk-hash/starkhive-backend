@@ -13,6 +13,7 @@ import { Content } from '@src/content/entities/content.entity';
 import { Connection } from '@src/connection/entities/connection.entity';
 import { ConnectionNotification } from '@src/notifications/entities/connection-notification.entity';
 import { Reputation } from '@src/reputation/Reputation.entity';
+import { UserSkill } from '../../skills/entities/skill.entity';
 
 @Entity('users')
 @Index(['username', 'email'])
@@ -59,6 +60,12 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @OneToMany(() => Content, (content) => content.creator) // Ensure this matches the Content relationship
+  content: Content[];
+
+  @OneToMany(() => UserSkill, (userSkill) => userSkill.user)
+  skills: UserSkill[];
+}
   @OneToOne(() => FreelancerProfile, (freelancerProfile) => freelancerProfile.user, { cascade: true })
   freelancerProfile: FreelancerProfile;
 }
