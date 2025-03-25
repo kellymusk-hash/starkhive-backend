@@ -15,7 +15,7 @@ dotenv.config();
 export class NotificationsService {
   private transporter = nodemailer.createTransport({
     service: 'gmail',
-    auth: { user: 'your-email@gmail.com', pass: 'your-password' },
+    auth: { user: 'your-email@gmail.com', pass: 'your-password' },    
   });
 
   // private twilioClient = Twilio(

@@ -16,6 +16,8 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationSettingsModule } from './notification-settings/notification-settings.module';
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 import { PostModule } from './post/post.module';
+// import { ReportModule } from './report/report.module';
+import { ReportsModule } from './reports/reports.module';
 import { EndorsementModule } from './endorsement/endorsement.module';
 // import { NotificationsService } from './notifications/notifications.service';
 import { PolicyModule } from './policy/policy.module';
@@ -82,6 +84,7 @@ dotenv.config();
     NotificationSettingsModule,
     FreelancerProfileModule,
     PostModule,
+    ReportsModule,
     EndorsementModule,
     PolicyModule,
     PolicyReportingModule,
@@ -107,7 +110,6 @@ dotenv.config();
     RolesGuard,
     PermissionGuard,
     PermissionService,
-    // NotificationsService,
   ],
   // exports: [NotificationsService]
 })
