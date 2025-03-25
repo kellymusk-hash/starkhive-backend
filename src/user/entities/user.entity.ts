@@ -7,12 +7,20 @@ import { OneToOne } from 'typeorm';
 import { FreelancerProfile } from 'src/freelancer-profile/entities/freelancer-profile.entity';
 import { Post } from 'src/post/entities/post.entity';
 import { Conversation } from '../../conversations/conversation.entity';
+import { AuditLog } from '@src/audit/entitites/audit-log.entity';
+import { Report } from '@src/reporting/entities/report.entity';
+import { Content } from '@src/content/entities/content.entity';
+import { Connection } from '@src/connection/entities/connection.entity';
+import { ConnectionNotification } from '@src/notifications/entities/connection-notification.entity';
+import { Reputation } from '@src/reputation/Reputation.entity';
 
 @Entity('users')
 @Index(['username', 'email'])
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+  @OneToOne(() => Reputation, (reputation) => reputation.user, { cascade: true })
+  reputation: Reputation;
 
   @Column({ unique: true })
   @IsNotEmpty()

@@ -24,6 +24,9 @@ import { ConversationsModule } from './conversations/conversations.module';
 import { WebsocketsModule } from './websockets/websockets.module';
 import { SearchModule } from './search/search.module';
 import { AttachmentsModule } from './attachments/attachments.module';
+import { PostModule } from './post/post.module';
+// import { ReportModule } from './report/report.module';
+import { ReportsModule } from './reports/reports.module';
 import { EndorsementModule } from './endorsement/endorsement.module';
 // import { NotificationsService } from './notifications/notifications.service';
 import { PolicyModule } from './policy/policy.module';
@@ -46,6 +49,8 @@ import { MessagingModule } from './messaging/messaging.module';
 
 import { ErrorTrackingModule } from './error-tracking/error-tracking.module';
 import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-tracking.middleware';
+import { ReputationModule } from './reputation/reputation.module';
+import { BlockchainModule } from './blockchain/blockchain.module';
 dotenv.config();
 
 @Module({
@@ -84,6 +89,7 @@ dotenv.config();
     NotificationSettingsModule,
     FreelancerProfileModule,
     PostModule,
+    ReportsModule,
     EndorsementModule,
     PolicyModule,
     PolicyReportingModule,
@@ -104,6 +110,8 @@ dotenv.config();
     ErrorTrackingModule,
    AttachmentsModule,
       WebsocketsModule,
+    ReputationModule,
+    BlockchainModule,
   ],
   providers: [
     RolesGuard,
