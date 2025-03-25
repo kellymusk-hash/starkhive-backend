@@ -109,6 +109,12 @@ export class User {
   @Column({ default: 'public' })
   connectionPrivacy: string;
 
+  @Column({ default: false })
+  mfaEnabled: boolean;
+
+  @Column({ type: 'varchar', nullable: true })
+  mfaSecret: string | null;
+
   @OneToMany(() => AuditLog, (auditLog) => auditLog.user)
   auditLogs: AuditLog[];
 
