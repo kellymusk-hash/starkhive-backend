@@ -38,6 +38,8 @@ import { MessagingModule } from './messaging/messaging.module';
 
 import { ErrorTrackingModule } from './error-tracking/error-tracking.module';
 import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-tracking.middleware';
+import { ReputationModule } from './reputation/reputation.module';
+import { BlockchainModule } from './blockchain/blockchain.module';
 dotenv.config();
 
 @Module({
@@ -96,7 +98,9 @@ dotenv.config();
     ProjectModule,
     TimeTrackingModule,
     SearchModule,
-    MessagingModule
+    MessagingModule,
+    ReputationModule,
+    BlockchainModule,
     ErrorTrackingModule
   ],
   providers: [
