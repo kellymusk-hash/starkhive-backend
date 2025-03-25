@@ -8,6 +8,8 @@ import { NotificationSettingsService } from '../notification-settings/notificati
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { JobNotification } from './entities/job-notification.entities';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Injectable()
 export class NotificationsService {
@@ -23,6 +25,7 @@ export class NotificationsService {
 
   constructor(
     private readonly notificationSettingsService: NotificationSettingsService,
+    
     @InjectRepository(JobNotification)
     private readonly notificationRepository: Repository<JobNotification>,
   ) {}

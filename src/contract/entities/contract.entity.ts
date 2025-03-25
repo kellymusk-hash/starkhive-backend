@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDat
 import { User } from '../../user/entities/user.entity';
 import { JobPosting } from '../../job-postings/entities/job-posting.entity';
 import { Payment } from '../../payment/entities/payment.entity';
+import { Project } from '../../project/entities/project.entity';
 
 @Entity()
 export class Contract {
@@ -31,6 +32,9 @@ export class Contract {
 
   @OneToMany(() => Payment, (payment) => payment.contract)
   payments: Payment[];
+
+  @OneToMany(() => Project, (project) => project.contract)
+  projects: Project[];
 
   @CreateDateColumn()
   createdAt: Date;
