@@ -6,13 +6,20 @@ import * as dotenv from 'dotenv';
 import { JobNotification } from './entities/job-notification.entity';
 import { NotificationSettingsService } from '../notification-settings/notification-settings.service';
 dotenv.config();
+import * as Twilio from 'twilio';
+import { NotificationSettingsService } from '../notification-settings/notification-settings.service';
+import { CreateNotificationDto } from './dto/create-notification.dto';
+import { UpdateNotificationDto } from './dto/update-notification.dto';
+import { JobNotification } from './entities/job-notification.entities';
 
 @Injectable()
 export class NotificationsService {
   private transporter = nodemailer.createTransport({
     service: 'gmail',
-    auth: { user: 'your-email@gmail.com', pass: 'your-password' },
+    auth: { user: 'your-email@gmail.com', pass: 'your-password' },    
   });
+
+  private twilioClient = Twilio('TWILIO_ACCOUNT_SID', 'TWILIO_AUTH_TOKEN');
 
   constructor(
     private readonly notificationSettingsService: NotificationSettingsService,
@@ -22,11 +29,7 @@ export class NotificationsService {
 
   public async create(createNotificationDto: { userId: number; type: string; message: string; }) {
     const { userId, type, message } = createNotificationDto;
-    const notification = this.notificationRepository.create({
-      userId,
-      type,
-      message,
-    });
+    const notification = this.notificationRepository.create({ userId, type, message });
     await this.notificationRepository.save(notification);
 
     const settings = await this.notificationSettingsService.getSettings(userId);
@@ -60,7 +63,6 @@ export class NotificationsService {
   public async findByUser(userId: number) {
     return await this.notificationRepository.find({ where: { userId } });
   }
-
   
   public async markAsRead(id: number, read: boolean) {
     const notification = await this.notificationRepository.findOne({ where: { id } });
@@ -72,14 +74,15 @@ export class NotificationsService {
   }
 
   public async sendEmail(to: string, subject: string, text: string) {
-    await this.transporter.sendMail({
-      from: 'your-email@gmail.com',
-      to,
-      subject,
-      text,
-    });
+    await this.transporter.sendMail({ from: 'your-email@gmail.com', to, subject, text });
   }
 
+  /**Send SMS */
+  public async sendSMS(to: string, message: string) {
+    await this.twilioClient.messages.create({ body: message, from: 'your-twilio-number', to });
+  }
+
+  /** Mock Push Notification */
   private sendPushNotification(userId: number, message: string) {
     console.log(`Sending Push Notification to User ${userId}: ${message}`);
   }
