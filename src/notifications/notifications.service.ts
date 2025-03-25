@@ -3,27 +3,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as nodemailer from 'nodemailer';
-<<<<<<< HEAD
-import * as dotenv from 'dotenv';
-import { JobNotification } from './entities/job-notification.entity';
 import { NotificationSettingsService } from '../notification-settings/notification-settings.service';
-dotenv.config();
-import * as Twilio from 'twilio';
-=======
-// import Twilio = require('twilio');
->>>>>>> parent of aa6a393 (Merge pull request #101 from iGEORGE17/feature/direct-messaging-latest)
-import { NotificationSettingsService } from '../notification-settings/notification-settings.service';
-import { CreateNotificationDto } from './dto/create-notification.dto';
-import { UpdateNotificationDto } from './dto/update-notification.dto';
+// dotenv.config();
 import { JobNotification } from './entities/job-notification.entities';
-import * as dotenv from 'dotenv';
-dotenv.config();
 
 @Injectable()
 export class NotificationsService {
   private transporter = nodemailer.createTransport({
     service: 'gmail',
-    auth: { user: 'your-email@gmail.com', pass: 'your-password' },    
+    auth: { user: 'your-email@gmail.com', pass: 'your-password' },
   });
 
   // private twilioClient = Twilio(
@@ -37,27 +25,37 @@ export class NotificationsService {
     private readonly notificationRepository: Repository<JobNotification>,
   ) {}
 
-  public async create(createNotificationDto: { userId: number; type: string; message: string; }) {
+  public async create(createNotificationDto: {
+    userId: string | number;
+    type: string;
+    message: string;
+  }) {
     const { userId, type, message } = createNotificationDto;
     const notification = this.notificationRepository.create({
-      userId,
+      userId: typeof userId === 'string' ? parseInt(userId, 10) : userId,
       type,
       message,
     });
     await this.notificationRepository.save(notification);
 
-    const settings = await this.notificationSettingsService.getSettings(userId);
+    const settings = await this.notificationSettingsService.getSettings(
+      typeof userId === 'string' ? parseInt(userId, 10) : userId
+    );
     if (settings.email)
       await this.sendEmail('user@example.com', 'New Notification', message);
-<<<<<<< HEAD
-    if (settings.push)
-      this.sendPushNotification(userId, message);
+    if (settings.push) this.sendPushNotification(
+      typeof userId === 'string' ? parseInt(userId, 10) : userId, 
+      message
+    );
 
     return notification;
   }
 
-  public async createMentionNotification(mentionedUserId: string, commentId: string) {
-    const userId = +mentionedUserId; 
+  public async createMentionNotification(
+    mentionedUserId: string,
+    commentId: string,
+  ) {
+    const userId = +mentionedUserId;
     const notification = this.notificationRepository.create({
       userId,
       type: 'mention',
@@ -68,13 +66,16 @@ export class NotificationsService {
 
     const settings = await this.notificationSettingsService.getSettings(userId);
     if (settings.email)
-      await this.sendEmail('user@example.com', 'You were mentioned', `You were mentioned in comment: ${commentId}`);
+      await this.sendEmail(
+        'user@example.com',
+        'You were mentioned',
+        `You were mentioned in comment: ${commentId}`,
+      );
     if (settings.push)
-      this.sendPushNotification(userId, `You were mentioned in comment: ${commentId}`);
-=======
-    // if (settings.sms) await this.sendSMS('+1234567890', message);
-    if (settings.push) this.sendPushNotification(userId, message);
->>>>>>> parent of aa6a393 (Merge pull request #101 from iGEORGE17/feature/direct-messaging-latest)
+      this.sendPushNotification(
+        userId,
+        `You were mentioned in comment: ${commentId}`,
+      );
 
     return notification;
   }
@@ -82,31 +83,15 @@ export class NotificationsService {
   public async findByUser(userId: number) {
     return await this.notificationRepository.find({ where: { userId } });
   }
-<<<<<<< HEAD
-  
-  public async markAsRead(id: number, read: boolean) {
-    const notification = await this.notificationRepository.findOne({ where: { id } });
-    if (!notification) {
-      throw new NotFoundException(`Notification with ID ${id} not found`);
-    }
-    notification.read = read;
-=======
 
-  /**Mark a notification as read */
-  public async markAsRead(
-    id: number,
-    updateNotificationDto: UpdateNotificationDto,
-  ) {
+  public async markAsRead(id: number, read: boolean) {
     const notification = await this.notificationRepository.findOne({
       where: { id },
     });
     if (!notification) {
       throw new NotFoundException(`Notification with ID ${id} not found`);
     }
-
-    notification.read = updateNotificationDto.read ?? false; // Default to 'false' if undefined
-
->>>>>>> parent of aa6a393 (Merge pull request #101 from iGEORGE17/feature/direct-messaging-latest)
+    notification.read = read;
     return await this.notificationRepository.save(notification);
   }
 

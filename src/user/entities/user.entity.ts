@@ -35,7 +35,9 @@ import { UserSkill } from '../../skills/entities/skill.entity';
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @OneToOne(() => Reputation, (reputation) => reputation.user, { cascade: true })
+  @OneToOne(() => Reputation, (reputation) => reputation.user, {
+    cascade: true,
+  })
   reputation: Reputation;
 
   @Column({ unique: true, nullable: true })
@@ -85,22 +87,24 @@ export class User {
   @UpdateDateColumn()
   updatedAt?: Date;
 
-<<<<<<< HEAD
   @OneToMany(() => Content, (content) => content.creator) // Ensure this matches the Content relationship
   content: Content[];
 
   @OneToMany(() => UserSkill, (userSkill) => userSkill.user)
   skills: UserSkill[];
-}
-  @OneToOne(() => FreelancerProfile, (freelancerProfile) => freelancerProfile.user, { cascade: true })
-  freelancerProfile: FreelancerProfile;
-=======
+
   @OneToOne(
     () => FreelancerProfile,
     (freelancerProfile) => freelancerProfile.user,
     { cascade: true },
   )
-  freelancerProfile?: FreelancerProfile;
+  freelancerProfile: FreelancerProfile;
+
+  @OneToMany(() => AuditLog, (auditLog) => auditLog.user)
+  auditLogs: AuditLog[];
+
+  @Column({ nullable: true })
+  connectionPrivacy?: string;
 
   @OneToMany(() => Connection, (connection) => connection.requester)
   sentConnections: Connection[];
@@ -108,25 +112,6 @@ export class User {
   @OneToMany(() => Connection, (connection) => connection.recipient)
   receivedConnections: Connection[];
 
-  @OneToMany(
-    () => ConnectionNotification,
-    (notification) => notification.user,
-    {
-      cascade: true,
-    },
-  )
-  notifications: Notification[];
-
-  @Column({ default: 'public' })
-  connectionPrivacy: string;
-
-  @OneToMany(() => AuditLog, (auditLog) => auditLog.user)
-  auditLogs: AuditLog[];
-
-  @OneToMany(() => Report, (report) => report.reporter)
-  reports: Report[];
-
-  @OneToMany(() => Content, (content) => content.creator) // Ensure this matches the Content relationship
-  content: Content[];
->>>>>>> parent of aa6a393 (Merge pull request #101 from iGEORGE17/feature/direct-messaging-latest)
+  @OneToMany(() => ConnectionNotification, (notification) => notification.user)
+  notifications: ConnectionNotification[];
 }
