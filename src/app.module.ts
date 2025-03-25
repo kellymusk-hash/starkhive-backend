@@ -36,6 +36,8 @@ import { TimeTrackingModule } from './time-tracking/time-tracking.module';
 import { SearchModule } from './search/search.module';
 import { ErrorTrackingModule } from './error-tracking/error-tracking.module';
 import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-tracking.middleware';
+import { ReputationModule } from './reputation/reputation.module';
+import { BlockchainModule } from './blockchain/blockchain.module';
 dotenv.config();
 
 @Module({
@@ -94,7 +96,9 @@ dotenv.config();
     ProjectModule,
     TimeTrackingModule,
     SearchModule,
-    ErrorTrackingModule
+    ErrorTrackingModule,
+    ReputationModule,
+    BlockchainModule
   ],
   providers: [
     RolesGuard,
