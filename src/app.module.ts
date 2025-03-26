@@ -43,6 +43,7 @@ import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-track
 import { ReputationModule } from './reputation/reputation.module';
 import { BlockchainModule } from './blockchain/blockchain.module';
 import { SkillsModule } from './skills/skills.module';
+import { AppCacheModule } from "./app-cache.module";
 dotenv.config();
 
 @Module({
@@ -107,7 +108,10 @@ dotenv.config();
     CommentModule,
     MessagingModule,
     ErrorTrackingModule,
-    SkillsModule
+    SkillsModule,
+
+    // Cache module
+    AppCacheModule,
   ],
   providers: [
     RolesGuard,
@@ -126,6 +130,7 @@ export class AppModule {
     // Apply other middleware
     consumer
       .apply(AuthMiddleware, ApiUsageMiddleware)
+      .exclude('auth/register', 'auth/login')
       .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
