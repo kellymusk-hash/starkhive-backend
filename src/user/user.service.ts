@@ -5,20 +5,17 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { CacheService } from "@src/cache.service";
+import { CacheService } from '@src/cache/cache.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-     private cacheManager: CacheService
+    private cacheManager: CacheService,
   ) {}
-  
-   getUserConnections(_userId: string) {
-    throw new Error('Method not implemented.');
-     
-     async create(createUserDto: CreateUserDto): Promise<User> {
+
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const user = this.userRepository.create(createUserDto);
     return this.userRepository.save(user);
   }
@@ -28,21 +25,17 @@ export class UserService {
   }
 
   async findOne(id: string): Promise<User> {
+    const cachedUser = await this.cacheManager.get(`user:${id}`, 'UserService');
+    if (cachedUser) {
+      return cachedUser;
+    }
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new Error('User not found');
     }
-    return user;
-  }
 
-  async findOne(id: number) {
-    const value = await this.cacheManager.get(`${id}`);
-    if (value) {
-      console.log(`Cached value: ${value}`);
-      return value;
-    }
-    await this.cacheManager.set(`${id}`, `This action returns a #${id} user`);
-    return `This action returns a #${id} user`;
+    await this.cacheManager.set(`user:${id}`, user);
+    return user;
   }
 
   async remove(id: string): Promise<void> {

@@ -46,7 +46,7 @@ import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-track
 import { ReputationModule } from './reputation/reputation.module';
 import { BlockchainModule } from './blockchain/blockchain.module';
 import { SkillsModule } from './skills/skills.module';
-import { AppCacheModule } from "./app-cache.module";
+import { CacheModule } from "./cache/cache.module";
 dotenv.config();
 
 @Module({
@@ -114,12 +114,7 @@ dotenv.config();
     SkillsModule,
 
     // Cache module
-    AppCacheModule,
-  ],
-  providers: [
-    RolesGuard,
-    PermissionGuard,
-    PermissionService,
+    CacheModule,
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })
