@@ -112,6 +112,30 @@ export class User {
   @OneToMany(() => Connection, (connection) => connection.recipient)
   receivedConnections: Connection[];
 
-  @OneToMany(() => ConnectionNotification, (notification) => notification.user)
-  notifications: ConnectionNotification[];
+  @OneToMany(
+    () => ConnectionNotification,
+    (notification) => notification.user,
+    {
+      cascade: true,
+    },
+  )
+  notifications: Notification[];
+
+  @Column({ default: 'public' })
+  connectionPrivacy: string;
+
+  @Column({ default: false })
+  mfaEnabled: boolean;
+
+  @Column({ type: 'varchar', nullable: true })
+  mfaSecret: string | null;
+
+  @OneToMany(() => AuditLog, (auditLog) => auditLog.user)
+  auditLogs: AuditLog[];
+
+  @OneToMany(() => Report, (report) => report.reporter)
+  reports: Report[];
+
+  @OneToMany(() => Content, (content) => content.creator) // Ensure this matches the Content relationship
+  content: Content[];
 }
