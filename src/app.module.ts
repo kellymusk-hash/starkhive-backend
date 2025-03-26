@@ -19,6 +19,10 @@ import { NotificationSettingsModule } from './notification-settings/notification
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 import { PostModule } from './post/post.module';
 import { PostService } from './post/post.service'; // Ensure this import is included
+// import { ReportModule } from './report/report.module';
+import { ReportsModule } from './reports/reports.module';
+import { EndorsementModule } from './endorsement/endorsement.module';
+// import { NotificationsService } from './notifications/notifications.service';
 import { PolicyModule } from './policy/policy.module';
 import { PolicyReportingModule } from './policy-reporting/policy-reporting.module';
 import { PolicyVersionModule } from './policy-version/policy-version.module';
@@ -32,6 +36,16 @@ import { AnalyticsModule } from './analytics/analytics.module';
 import { ConfigurationModule } from './configuration/configuraton.module';
 import { HealthModule } from './health/health.module';
 import { ConnectionModule } from './connection/connection.module';
+import { ProjectModule } from './project/project.module';
+import { TimeTrackingModule } from './time-tracking/time-tracking.module';
+import { SearchModule } from './search/search.module';
+import { CommentModule } from './comment/comment.module';
+import { MessagingModule } from './messaging/messaging.module';
+import { ErrorTrackingModule } from './error-tracking/error-tracking.module';
+import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-tracking.middleware';
+import { ReputationModule } from './reputation/reputation.module';
+import { BlockchainModule } from './blockchain/blockchain.module';
+import { SkillsModule } from './skills/skills.module';
 dotenv.config();
 
 @Module({
@@ -39,10 +53,10 @@ dotenv.config();
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [
+        '.env.local',
         '.env.development',
         '.env.production',
         '.env.test',
-        '.env.local',
       ],
     }),
 
@@ -74,6 +88,8 @@ dotenv.config();
     NotificationSettingsModule,
     FreelancerProfileModule,
     PostModule,
+    ReportsModule,
+    EndorsementModule,
     PolicyModule,
     PolicyReportingModule,
     PolicyVersionModule,
@@ -85,12 +101,27 @@ dotenv.config();
     ReportingModule,
     AnalyticsModule,
     HealthModule,
-    ConnectionModule
+    ConnectionModule,
+    ProjectModule,
+    TimeTrackingModule,
+    SearchModule,
+    ReputationModule,
+    BlockchainModule,
+    CommentModule,
+    MessagingModule,
+    ErrorTrackingModule,
+    SkillsModule,
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
+    // Apply error tracking middleware first to catch all errors
+    consumer
+      .apply(ErrorTrackingMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
+
+    // Apply other middleware
     consumer
       .apply(AuthMiddleware, ApiUsageMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });

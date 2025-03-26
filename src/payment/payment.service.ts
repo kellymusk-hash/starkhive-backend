@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Payment } from './entities/payment.entity';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { GenerateInvoiceDto } from './dto/generate-invoice.dto';
 
 @Injectable()
 export class PaymentService {
@@ -164,5 +165,23 @@ export class PaymentService {
   async handleCallback(reference: string) {
     this.logger.log(`Callback received for reference: ${reference}`);
     return { status: 'success' };
+  }
+
+  async generateInvoice(generateInvoiceDto: GenerateInvoiceDto): Promise<Payment> {
+    const payment = this.paymentRepository.create({
+      amount: generateInvoiceDto.amount,
+      currency: 'USD', // or get from config
+      status: 'pending',
+      email: generateInvoiceDto.timeEntry.freelancer.email,
+      metadata: JSON.stringify({
+        timeEntryId: generateInvoiceDto.timeEntry.id,
+        projectId: generateInvoiceDto.projectId,
+        description: generateInvoiceDto.description
+      }),
+      contract: generateInvoiceDto.timeEntry.project.contract,
+      user: generateInvoiceDto.timeEntry.freelancer
+    });
+
+    return this.paymentRepository.save(payment);
   }
 }

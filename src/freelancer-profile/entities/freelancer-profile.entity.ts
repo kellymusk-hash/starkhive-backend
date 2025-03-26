@@ -6,9 +6,11 @@ import {
     JoinColumn,
     CreateDateColumn,
     UpdateDateColumn,
+    OneToMany,
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { IsNotEmpty, IsString, IsArray, IsOptional, IsUrl } from 'class-validator';
+import { FreelancerPortfolioProject } from './freelancer-portfolio.entity';
 
 @Entity('freelancer_profiles')
 export class FreelancerProfile {
@@ -35,6 +37,9 @@ export class FreelancerProfile {
     @IsUrl({}, { each: true })
     @IsOptional()
     portfolioLinks: string[];
+
+    @OneToMany(() => FreelancerPortfolioProject, (freelancerPortfolioProject) => freelancerPortfolioProject.profile)
+    projects: FreelancerPortfolioProject[]
 
     @CreateDateColumn()
     createdAt: Date;

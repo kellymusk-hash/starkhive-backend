@@ -1,3 +1,4 @@
+
 import { Contract } from 'src/contract/entities/contract.entity';
 import {
   Entity,
@@ -46,3 +47,4 @@ export class JobPosting {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 }
+
