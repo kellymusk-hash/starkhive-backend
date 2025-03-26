@@ -46,6 +46,9 @@ export class FreelancerPortfolioProject {
     @Column({ type: 'int', default: 0 })
     views: number;
 
+    @Column({ type: 'timestamptz', nullable: true })
+    lastViewedAt: Date;
+
     @CreateDateColumn()
     createdAt: Date;
 

@@ -59,6 +59,7 @@ export class FreelancerPortfolioRepository {
             .createQueryBuilder()
             .update(FreelancerPortfolioProject)
             .set({ views: () => "views + 1" })
+            .set({ lastViewedAt: () => "Date.now" })
             .where("id = :id", { id })
             .execute()
     }

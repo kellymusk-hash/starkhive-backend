@@ -71,4 +71,11 @@ export class FreelancerProfileController {
     }
     return this.freelancerPortfolioService.findProjects(filter)
   }
+
+  @Post(':/id/view')
+  async trackProjectViews(
+    @Param('id') projectId: string
+  ) {
+    return this.freelancerPortfolioService.incrementViews(projectId);
+  }
 }
