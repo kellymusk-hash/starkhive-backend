@@ -27,10 +27,8 @@ export class UserController {
     await this.auditService.createLog({
       action: 'user_created',
       resourceType: 'user',
-      // resourceId: user.id,
-      userId: currentUser.id, // Use the checked userId
+      userId: currentUser.id,
       ipAddress: req.ip,
-      // details: { email: user.email },
     });
 
     return user;
@@ -48,11 +46,11 @@ export class UserController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+    return this.userService.updateUser(id, updateUserDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+    return this.userService.remove(id);
   }
 }

@@ -1,21 +1,38 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 import { CacheService } from "@src/cache.service";
 
 @Injectable()
 export class UserService {
-  constructor(private cacheManager: CacheService) {}
-  getUserConnections(_userId: string) {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+     private cacheManager: CacheService
+  ) {}
+  
+   getUserConnections(_userId: string) {
     throw new Error('Method not implemented.');
-  }
-  create(_createUserDto: CreateUserDto) {
-    return 'This method creates the service';
+     
+     async create(createUserDto: CreateUserDto): Promise<User> {
+    const user = this.userRepository.create(createUserDto);
+    return this.userRepository.save(user);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find();
+  }
+
+  async findOne(id: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
   }
 
   async findOne(id: number) {
@@ -28,11 +45,12 @@ export class UserService {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, _updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async remove(id: string): Promise<void> {
+    await this.userRepository.delete(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async getUserConnections(userId: string) {
+    // Implementation for getting user connections
+    return [];
   }
 }

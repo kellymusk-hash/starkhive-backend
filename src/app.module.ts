@@ -2,6 +2,8 @@ import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JobPostingsModule } from './job-postings/job-postings.module';
+import { CompanyPostingsModule } from './company-postings/company-postings.module';
+import { FreelancerPostingsModule } from './freelancer-postings/freelancer-postings.module';
 import { AuthMiddleware } from './auth/middleware/auth.middleware';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { PermissionService } from './auth/services/permission.service';
@@ -16,6 +18,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationSettingsModule } from './notification-settings/notification-settings.module';
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 import { PostModule } from './post/post.module';
+import { PostService } from './post/post.service'; // Ensure this import is included
 // import { ReportModule } from './report/report.module';
 import { ReportsModule } from './reports/reports.module';
 import { EndorsementModule } from './endorsement/endorsement.module';
@@ -48,18 +51,16 @@ dotenv.config();
 
 @Module({
   imports: [
-    // Load environment variables globally
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [
+        '.env.local',
         '.env.development',
         '.env.production',
         '.env.test',
-        '.env.local',
       ],
     }),
 
-    // Configure TypeORM with environment variables
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -78,6 +79,8 @@ dotenv.config();
     // Import modules
     AuthModule,
     JobPostingsModule,
+    CompanyPostingsModule,
+    FreelancerPostingsModule,
     CompanyModule,
     UserModule,
     ContractModule,
@@ -118,7 +121,7 @@ dotenv.config();
     PermissionGuard,
     PermissionService,
   ],
-  // exports: [NotificationsService]
+  providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
