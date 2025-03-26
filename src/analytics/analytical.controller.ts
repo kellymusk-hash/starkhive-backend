@@ -16,7 +16,6 @@ export class AnalyticsController {
   }
 
   @Get('metrics')
-  // @UseGuards(JwtAuthGuard, AdminGuard)
   getMetricsByType(
     @Query('type', new ParseEnumPipe(MetricType)) type: MetricType,
     @Query('startDate') startDate?: string,
@@ -30,7 +29,6 @@ export class AnalyticsController {
   }
 
   @Get('summary')
-  // @UseGuards(JwtAuthGuard, AdminGuard)
   getMetricsSummary(
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
@@ -42,11 +40,10 @@ export class AnalyticsController {
   }
 
   @Get('daily')
-  // @UseGuards(JwtAuthGuard, AdminGuard)
   getDailyMetrics(
     @Query('type', new ParseEnumPipe(MetricType)) type: MetricType,
     @Query('days') days = 30,
   ) {
     return this.analyticsService.getDailyMetrics(type, +days);
   }
-}
+

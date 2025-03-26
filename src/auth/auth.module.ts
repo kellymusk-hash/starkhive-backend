@@ -4,6 +4,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { UtilService } from './utils/utils.function';
+import { UserModule } from '@src/user/user.module';
+import { MfaModule } from './mfa/mfa.module';
 
 @Module({
     imports: [
@@ -15,8 +18,10 @@ import { JwtStrategy } from './strategies/jwt.strategy';
             }),
             inject: [ConfigService],
         }),
+        UserModule,
+        MfaModule
     ],
-    providers: [AuthService, JwtStrategy],
+    providers: [AuthService, JwtStrategy, UtilService],
     controllers: [AuthController],
     exports: [AuthService],
 })

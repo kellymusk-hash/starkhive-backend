@@ -27,12 +27,10 @@ export class AnalyticsService {
     if (startDate && endDate) {
       query.createdAt = Between(startDate, endDate);
     }
-
     const metrics = await this.metricRepository.find({
       where: query,
       order: { createdAt: 'ASC' },
     });
-
     return metrics;
   }
 
@@ -42,7 +40,6 @@ export class AnalyticsService {
     if (startDate && endDate) {
       whereClause.createdAt = Between(startDate, endDate);
     }
-
     const summaryData = await this.metricRepository
       .createQueryBuilder('metric')
       .select('metric.type', 'type')
@@ -53,7 +50,6 @@ export class AnalyticsService {
       .where(whereClause)
       .groupBy('metric.type')
       .getRawMany();
-
     return summaryData;
   }
 
@@ -61,7 +57,6 @@ export class AnalyticsService {
     const endDate = new Date();
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - days);
-
     const dailyData = await this.metricRepository
       .createQueryBuilder('metric')
       .select('DATE(metric.createdAt)', 'date')
@@ -76,3 +71,4 @@ export class AnalyticsService {
     return dailyData;
   }
 }
+
