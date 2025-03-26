@@ -2,12 +2,10 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   Repository,
-  Like,
   ILike,
   Between,
   MoreThanOrEqual,
   LessThanOrEqual,
-  Raw,
 } from 'typeorm';
 import { FreelancerPosting } from './entities/freelancer-posting.entity';
 import { CreateFreelancerDto } from './dto/create-freelancer.dto';
@@ -52,7 +50,9 @@ export class FreelancerPostingsService {
       experience: 'yearsOfExperience',
     };
 
-    const orderByField = validSortFields[sortBy] || 'createdAt';
+    // Validate the sortBy parameter
+    const orderByField =
+      validSortFields[sortBy as keyof typeof validSortFields] || 'createdAt';
     const order = sortOrder?.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
 
     const [freelancers, total] = await this.freelancerRepository.findAndCount({

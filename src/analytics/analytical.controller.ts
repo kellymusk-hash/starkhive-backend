@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Query, UseGuards, ParseEnumPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Query,
+  UseGuards,
+  ParseEnumPipe,
+} from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 // import { AdminGuard } from '../auth/guards/admin.guard';
 import { CreateMetricDto } from './dto/create-metric.dto';
@@ -46,4 +54,4 @@ export class AnalyticsController {
   ) {
     return this.analyticsService.getDailyMetrics(type, +days);
   }
-
+}
