@@ -51,10 +51,10 @@ dotenv.config();
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [
+        '.env.local',
         '.env.development',
         '.env.production',
         '.env.test',
-        '.env.local',
       ],
     }),
 
@@ -107,13 +107,9 @@ dotenv.config();
     CommentModule,
     MessagingModule,
     ErrorTrackingModule,
-    SkillsModule
+    SkillsModule,
   ],
-  providers: [
-    RolesGuard,
-    PermissionGuard,
-    PermissionService,
-  ],
+  providers: [RolesGuard, PermissionGuard, PermissionService],
   // exports: [NotificationsService]
 })
 export class AppModule {
