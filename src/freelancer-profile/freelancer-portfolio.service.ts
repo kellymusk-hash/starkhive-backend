@@ -14,4 +14,8 @@ export class FreelancerPortfolioService {
     }): Promise<FreelancerPortfolioProject[]>{
         return this.freelancerPortfolioRepository.findProjects(filter)
     }
+
+    async incrementViews(projectId: string){
+        await this.freelancerPortfolioRepository.incrementViews(projectId)
+    }
 }

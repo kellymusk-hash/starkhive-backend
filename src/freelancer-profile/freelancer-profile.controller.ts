@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { FreelancerProfileService } from './freelancer-profile.service';
 import { CreateFreelancerProfileDto } from './dto/create-freelancer-profile.dto';
@@ -17,6 +18,7 @@ import { FreelancerPortfolioService } from './freelancer-portfolio.service';
 export class FreelancerProfileController {
   constructor(
     private readonly freelancerProfileService: FreelancerProfileService,
+    private readonly freelancerPortfolioService: FreelancerPortfolioService
   ) {}
 
   @Post()
@@ -54,5 +56,19 @@ export class FreelancerProfileController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.freelancerProfileService.deleteProfile(id);
+  }
+
+  @Get('portfolio')
+  async getPortfolioProject(
+    @Query('sort') sort: 'recent' | 'popular',
+    @Query('category') category?: string,
+    @Query('tags') tags?: string[],
+  ) {
+    const filter = {
+      category,
+      tags,
+      sortBy: sort || undefined
+    }
+    return this.freelancerPortfolioService.findProjects(filter)
   }
 }

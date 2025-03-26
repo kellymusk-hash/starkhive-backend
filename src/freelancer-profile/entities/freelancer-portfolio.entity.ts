@@ -43,7 +43,7 @@ export class FreelancerPortfolioProject {
     @Column()
     testimonials: Testimonial[];
 
-    @Column()
+    @Column({ type: 'int', default: 0 })
     views: number;
 
     @CreateDateColumn()

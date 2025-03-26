@@ -16,7 +16,7 @@ export class FreelancerPortfolioRepository {
         return this.freelancePortfolioRepository.save(freelancerPortfolioProject)
     }
 
-    async findById(id: string): Promise<FreelancerPortfolioProject> {
+    async findById(id: string): Promise<FreelancerPortfolioProject | null> {
         return this.freelancePortfolioRepository.findOne({
             where: { id }
         })
@@ -52,5 +52,14 @@ export class FreelancerPortfolioRepository {
         }
 
         return query.getMany()
+    }
+
+    async incrementViews(id: string): Promise<void> {
+        await this.freelancePortfolioRepository
+            .createQueryBuilder()
+            .update(FreelancerPortfolioProject)
+            .set({ views: () => "views + 1" })
+            .where("id = :id", { id })
+            .execute()
     }
 }
