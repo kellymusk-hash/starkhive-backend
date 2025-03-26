@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as speakeasy from 'speakeasy';
 import * as QRCode from 'qrcode';
 import { UserService } from '../../user/user.service';
-import { User } from '../../user/entities/user.entity';
 
 @Injectable()
 export class MfaService {
@@ -35,9 +34,11 @@ export class MfaService {
 
   async verifyAndEnableMfa(userId: string, token: string) {
     const user = await this.userService.findOne(userId);
-    
+
     if (!user.mfaSecret) {
-      throw new UnauthorizedException('MFA secret not found. Please generate a new secret.');
+      throw new UnauthorizedException(
+        'MFA secret not found. Please generate a new secret.',
+      );
     }
 
     const isValid = speakeasy.totp.verify({
@@ -69,7 +70,7 @@ export class MfaService {
 
   async verifyMfaToken(userId: string, token: string) {
     const user = await this.userService.findOne(userId);
-    
+
     if (!user.mfaEnabled || !user.mfaSecret) {
       throw new UnauthorizedException('MFA is not enabled for this user');
     }
@@ -86,4 +87,4 @@ export class MfaService {
 
     return { success: true };
   }
-} 
+}
