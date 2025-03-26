@@ -16,6 +16,8 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationSettingsModule } from './notification-settings/notification-settings.module';
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 import { PostModule } from './post/post.module';
+// import { ReportModule } from './report/report.module';
+import { ReportsModule } from './reports/reports.module';
 import { EndorsementModule } from './endorsement/endorsement.module';
 // import { NotificationsService } from './notifications/notifications.service';
 import { PolicyModule } from './policy/policy.module';
@@ -34,12 +36,13 @@ import { ConnectionModule } from './connection/connection.module';
 import { ProjectModule } from './project/project.module';
 import { TimeTrackingModule } from './time-tracking/time-tracking.module';
 import { SearchModule } from './search/search.module';
+import { CommentModule } from './comment/comment.module';
 import { MessagingModule } from './messaging/messaging.module';
-
 import { ErrorTrackingModule } from './error-tracking/error-tracking.module';
 import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-tracking.middleware';
 import { ReputationModule } from './reputation/reputation.module';
 import { BlockchainModule } from './blockchain/blockchain.module';
+import { SkillsModule } from './skills/skills.module';
 dotenv.config();
 
 @Module({
@@ -82,6 +85,7 @@ dotenv.config();
     NotificationSettingsModule,
     FreelancerProfileModule,
     PostModule,
+    ReportsModule,
     EndorsementModule,
     PolicyModule,
     PolicyReportingModule,
@@ -98,16 +102,17 @@ dotenv.config();
     ProjectModule,
     TimeTrackingModule,
     SearchModule,
-    MessagingModule,
     ReputationModule,
     BlockchainModule,
-    ErrorTrackingModule
+    CommentModule,
+    MessagingModule,
+    ErrorTrackingModule,
+    SkillsModule
   ],
   providers: [
     RolesGuard,
     PermissionGuard,
     PermissionService,
-    // NotificationsService,
   ],
   // exports: [NotificationsService]
 })
