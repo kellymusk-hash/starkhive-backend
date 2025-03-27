@@ -5,14 +5,12 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { CacheService } from '@src/cache/cache.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private cacheManager: CacheService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -25,16 +23,11 @@ export class UserService {
   }
 
   async findOne(id: string): Promise<User> {
-    const cachedUser = await this.cacheManager.get(`user:${id}`, 'UserService');
-    if (cachedUser) {
-      return cachedUser;
-    }
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new Error('User not found');
     }
 
-    await this.cacheManager.set(`user:${id}`, user);
     return user;
   }
 
