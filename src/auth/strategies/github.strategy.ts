@@ -35,27 +35,27 @@ export class GitHubStrategy extends PassportStrategy(Strategy, 'github') {
     private authService: AuthService,
   ) {
     super({
-      clientID: configService.get('GITHUB_CLIENT_ID'),
-      clientSecret: configService.get('GITHUB_CLIENT_SECRET'),
-      callbackURL: configService.get('GITHUB_CALLBACK_URL'),
+      clientID: configService.get<string>('GITHUB_CLIENT_ID') || '',
+      clientSecret: configService.get<string>('GITHUB_CLIENT_SECRET') || '',
+      callbackURL: configService.get<string>('GITHUB_CALLBACK_URL') || '',
       scope: ['user:email'],
+      passReqToCallback: true,
     });
   }
 
   async validate(
+    req: Request, // Add this parameter
     accessToken: string,
     _refreshToken: string,
     profile: GitHubProfile,
     done: (err: any, user: any) => void,
   ) {
     try {
-      // Fetch emails from GitHub API
       const emailsResponse = await fetch('https://api.github.com/user/emails', {
         headers: { Authorization: `token ${accessToken}` },
       });
       const emails: GitHubEmail[] = await emailsResponse.json();
 
-      // Find primary verified email
       const primaryEmail = emails.find(
         (email) => email.primary && email.verified,
       );
