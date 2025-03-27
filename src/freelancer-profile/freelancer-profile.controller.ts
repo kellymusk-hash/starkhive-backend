@@ -7,15 +7,26 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { FreelancerProfileService } from './freelancer-profile.service';
 import { CreateFreelancerProfileDto } from './dto/create-freelancer-profile.dto';
 import { UpdateFreelancerProfileDto } from './dto/update-freelancer-profile.dto';
+import { SearchFreelancerProfileDto } from './dto/search-freelancer-profile.dto';
 import { FreelancerPortfolioRepository } from './repositories/freelancer-portfolio.repository';
 import { FreelancerPortfolioService } from './freelancer-portfolio.service';
 import { CacheService } from "@src/cache/cache.service";
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 
-@Controller('freelancer-profile')
+@ApiTags('freelancer-profiles')
+@Controller('freelancer-profiles')
 export class FreelancerProfileController {
   constructor(
     private readonly freelancerProfileService: FreelancerProfileService,
@@ -24,14 +35,18 @@ export class FreelancerProfileController {
   ) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Create a new freelancer profile' })
+  @ApiResponse({ status: 201, description: 'Profile created successfully' })
   create(@Body() createFreelancerProfileDto: CreateFreelancerProfileDto) {
-    return this.freelancerProfileService.createProfile(
-      createFreelancerProfileDto,
-    );
+    return this.freelancerProfileService.createProfile(createFreelancerProfileDto);
   }
 
   @Get()
-  async findAll() {
+  @ApiOperation({ summary: 'Get all freelancer profiles' })
+  @ApiResponse({ status: 200, description: 'Return all profiles' })
+   async findAll() {
     const cachedFreelancerProfiles = await this.cacheManager.get(`freelancer-profile:all`, 'FreelancerProfileService');
     if (cachedFreelancerProfiles) {
       return cachedFreelancerProfiles;
@@ -41,9 +56,20 @@ export class FreelancerProfileController {
     return freelancerProfiles;
   }
 
+
+  @Get('search')
+  @ApiOperation({ summary: 'Search freelancer profiles with filters' })
+  @ApiResponse({ status: 200, description: 'Return filtered profiles' })
+  @ApiQuery({ type: SearchFreelancerProfileDto })
+  async searchProfiles(@Query() searchParams: SearchFreelancerProfileDto) {
+    return this.freelancerProfileService.searchProfiles(searchParams);
+  }
+
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const cachedFreelancerProfile = await this.cacheManager.get(`freelancer-profile:${id}`, 'FreelancerProfileService');
+  @ApiOperation({ summary: 'Get freelancer profile by user ID' })
+  @ApiResponse({ status: 200, description: 'Return profile by user ID' })
+  getProfileByUserId(@Param('id') id: string) {
+     const cachedFreelancerProfile = await this.cacheManager.get(`freelancer-profile:${id}`, 'FreelancerProfileService');
     if (cachedFreelancerProfile) {
       return cachedFreelancerProfile;
     }
@@ -53,7 +79,11 @@ export class FreelancerProfileController {
   }
 
   @Patch(':id')
-  async update(
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update freelancer profile' })
+  @ApiResponse({ status: 200, description: 'Profile updated successfully' })
+  update(
     @Param('id') id: string,
     @Body() updateFreelancerProfileDto: UpdateFreelancerProfileDto,
   ) {
@@ -67,14 +97,20 @@ export class FreelancerProfileController {
     }
     // You can expand with other updates like portfolioLinks
   }
-
+  
+  
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete a freelancer profile' })
+  @ApiResponse({ status: 200, description: 'Profile deleted successfully' })
+  deleteProfile(@Param('id') id: string) {
     await this.cacheManager.del(`freelancer-profile:${id}`);
-    return this.freelancerProfileService.deleteProfile(id);
   }
 
   @Get('portfolio')
+  @ApiOperation({ summary: 'Get freelancer portfolio projects' })
+  @ApiResponse({ status: 200, description: 'Return portfolio projects' })
   async getPortfolioProject(
     @Query('sort') sort: 'recent' | 'popular',
     @Query('category') category?: string,
@@ -89,6 +125,8 @@ export class FreelancerProfileController {
   }
 
   @Post(':/id/view')
+  @ApiOperation({ summary: 'Track freelancer portfolio project views' })
+  @ApiResponse({ status: 200, description: 'Views tracked successfully' })
   async trackProjectViews(
     @Param('id') projectId: string
   ) {
