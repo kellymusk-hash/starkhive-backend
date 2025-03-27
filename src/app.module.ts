@@ -35,6 +35,7 @@ import { ConnectionModule } from './connection/connection.module';
 import { ProjectModule } from './project/project.module';
 import { TimeTrackingModule } from './time-tracking/time-tracking.module';
 import { SearchModule } from './search/search.module';
+import { AuditLogModule } from './audit-log/audit-log.module';
 import { CommentModule } from './comment/comment.module';
 import { MessagingModule } from './messaging/messaging.module';
 import { ErrorTrackingModule } from './error-tracking/error-tracking.module';
@@ -103,6 +104,7 @@ dotenv.config();
     ProjectModule,
     TimeTrackingModule,
     SearchModule,
+    AuditLogModule
     CommentModule,
     MessagingModule,
     ErrorTrackingModule,
