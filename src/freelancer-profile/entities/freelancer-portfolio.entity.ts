@@ -67,4 +67,7 @@ export class FreelancerPortfolioProject {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => FreelancerProfile, (profile) => profile.portfolioProjects)
+  freelancerProfile: FreelancerProfile;
 }
