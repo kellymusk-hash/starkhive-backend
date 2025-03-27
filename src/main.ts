@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import session from 'express-session';
+import passport from 'passport';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,9 +19,26 @@ async function bootstrap() {
   // Set global prefix for all routes
   app.setGlobalPrefix('api/admin');
 
+  // Session configuration
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET || 'your-secret-key', // Use env variable in production
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        secure: process.env.NODE_ENV === 'production',
+      },
+    }),
+  );
+
+  // Initialize passport and session
+  app.use(passport.initialize());
+  app.use(passport.session());
+
   app.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
