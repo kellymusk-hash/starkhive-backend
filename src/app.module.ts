@@ -43,6 +43,7 @@ import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-track
 import { ReputationModule } from './reputation/reputation.module';
 import { BlockchainModule } from './blockchain/blockchain.module';
 import { SkillsModule } from './skills/skills.module';
+import { CacheModule } from "./cache/cache.module";
 import { RateLimitingModule } from './rate-limiting/rate-limiting.module';
 import { RateLimitingMiddleware } from './rate-limiting/rate-limiting.middleware';
 import { PostService } from './post/post.service'; // Ensure this import is included
@@ -111,6 +112,9 @@ dotenv.config();
     ReputationModule,
     BlockchainModule,
     SkillsModule,
+
+    // Cache module
+    CacheModule,
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })
@@ -122,6 +126,7 @@ export class AppModule {
       .apply(RateLimitingMiddleware)
       .forRoutes('*')
       .apply(AuthMiddleware, ApiUsageMiddleware)
-      .forRoutes('*');
+      .exclude('auth/register', 'auth/login')
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }

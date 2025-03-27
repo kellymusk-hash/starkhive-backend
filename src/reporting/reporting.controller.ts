@@ -5,6 +5,7 @@ import { ReviewReportDto } from './dto/review-report.dto';
 import { ReportType } from './enums/report-type.enum';
 import { AuditService } from '../audit/audit.service';
 import { ReportStatus } from './enums/report-status.enums';
+import { CacheService } from "@src/cache/cache.service";
 
 @Controller('reports')
 // @UseGuards(JwtAuthGuard, AdminGuard)
@@ -12,6 +13,7 @@ export class ReportingController {
   constructor(
     private readonly reportingService: ReportingService,
     private readonly auditService: AuditService,
+    private cacheManager: CacheService
   ) {}
 
   @Get()
@@ -25,13 +27,25 @@ export class ReportingController {
   }
 
   @Get('stats')
-  getReportStats() {
-    return this.reportingService.getReportStats();
+  async getReportStats() {
+    const cachedReportStats = await this.cacheManager.get(`reports:stats`, 'ReportingService');
+    if (cachedReportStats) {
+      return cachedReportStats;
+    }
+    const reportStats = await this.reportingService.getReportStats();
+    await this.cacheManager.set(`reports:stats`, reportStats);
+    return reportStats;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reportingService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const cachedReport = await this.cacheManager.get(`reports:${id}`, 'ReportingService');
+    if (cachedReport) {
+      return cachedReport;
+    }
+    const report = await this.reportingService.findOne(id);
+    await this.cacheManager.set(`reports:${id}`, report);
+    return report;
   }
 
   @Patch(':id/review')
@@ -45,6 +59,7 @@ async reviewReport(
     throw new Error('User not authenticated'); // or handle it appropriately
   }
 
+  await this.cacheManager.del(`reports:${id}`);
   const result = await this.reportingService.reviewReport(id, reviewReportDto, req.user.id);
   
   await this.auditService.createLog({
