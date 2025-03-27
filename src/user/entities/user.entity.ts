@@ -1,9 +1,9 @@
-// src/user/entities/user.entity.ts
 import {
   IsBoolean,
   IsDate,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Length,
 } from 'class-validator';
@@ -43,6 +43,7 @@ export class User {
   reputation: Reputation;
 
   @Column({ unique: true, nullable: true })
+  @IsOptional()
   @Length(3, 20)
   username?: string;
 
@@ -51,13 +52,13 @@ export class User {
   @IsEmail()
   email: string;
 
-  @Column()
-  @IsNotEmpty()
-  @IsEmail()
+  @Column({ unique: true, nullable: true })
+  @IsOptional()
+  @IsString()
   password: string;
 
   @Column({ unique: true, nullable: true })
-  @IsNotEmpty()
+  @IsOptional()
   walletAddress?: string;
 
   @OneToMany(() => Contract, (contract) => contract.user)
@@ -68,6 +69,7 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.author)
   posts: Post[];
+
   @OneToMany(() => NotificationSettings, (notification) => notification.user)
   notificationSettings: NotificationSettings[];
 
@@ -77,7 +79,7 @@ export class User {
   @IsString()
   emailTokenVerification?: string;
 
-  @IsBoolean()
+  @IsString()
   resetToken: string;
 
   @IsDate()
@@ -89,7 +91,7 @@ export class User {
   @UpdateDateColumn()
   updatedAt?: Date;
 
-  @OneToMany(() => Content, (content) => content.creator) // Ensure this matches the Content relationship
+  @OneToMany(() => Content, (content) => content.creator)
   content: Content[];
 
   @OneToMany(() => UserSkill, (userSkill) => userSkill.user)
@@ -101,6 +103,22 @@ export class User {
     { cascade: true },
   )
   freelancerProfile: FreelancerProfile;
+
+  // OAuth fields
+  @Column({ nullable: true })
+  googleId?: string;
+
+  @Column({ nullable: true })
+  provider?: string;
+
+  @Column({ nullable: true })
+  name?: string;
+
+  @Column({ nullable: true })
+  githubId?: string;
+
+  @Column({ nullable: true })
+  linkedinId?: string;
 
   @OneToMany(() => AuditLog, (auditLog) => auditLog.user)
   auditLogs: AuditLog[];
@@ -117,9 +135,7 @@ export class User {
   @OneToMany(
     () => ConnectionNotification,
     (notification) => notification.user,
-    {
-      cascade: true,
-    },
+    { cascade: true },
   )
   notifications: Notification[];
 
