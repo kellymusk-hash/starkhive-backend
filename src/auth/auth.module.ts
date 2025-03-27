@@ -7,6 +7,10 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { UtilService } from './utils/utils.function';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '@src/user/entities/user.entity'; // Adjust path if needed
+import { GoogleStrategy } from './strategies/google.strategy';
+import { GitHubStrategy } from './strategies/github.strategy';
+import { LinkedInStrategy } from './strategies/linkedin.strategy';
+import { PassportSerializer } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -20,7 +24,14 @@ import { User } from '@src/user/entities/user.entity'; // Adjust path if needed
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, JwtStrategy, UtilService],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    UtilService,
+    GoogleStrategy,
+    GitHubStrategy,
+    LinkedInStrategy,
+  ],
   controllers: [AuthController],
   exports: [AuthService],
 })
