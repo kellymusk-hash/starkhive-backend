@@ -10,7 +10,6 @@ import { PermissionService } from './auth/services/permission.service';
 import { PermissionGuard } from './auth/guards/permissions.guard';
 import { CompanyModule } from './company/company.module';
 import { UserModule } from './user/user.module';
-import * as dotenv from 'dotenv';
 import { ContractModule } from './contract/contract.module';
 import { PaymentModule } from './payment/payment.module';
 import { AuthModule } from './auth/auth.module';
@@ -18,11 +17,8 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { NotificationSettingsModule } from './notification-settings/notification-settings.module';
 import { FreelancerProfileModule } from './freelancer-profile/freelancer-profile.module';
 import { PostModule } from './post/post.module';
-import { PostService } from './post/post.service'; // Ensure this import is included
-// import { ReportModule } from './report/report.module';
 import { ReportsModule } from './reports/reports.module';
 import { EndorsementModule } from './endorsement/endorsement.module';
-// import { NotificationsService } from './notifications/notifications.service';
 import { PolicyModule } from './policy/policy.module';
 import { PolicyReportingModule } from './policy-reporting/policy-reporting.module';
 import { PolicyVersionModule } from './policy-version/policy-version.module';
@@ -46,6 +42,10 @@ import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-track
 import { ReputationModule } from './reputation/reputation.module';
 import { BlockchainModule } from './blockchain/blockchain.module';
 import { SkillsModule } from './skills/skills.module';
+import { RateLimitingModule } from './rate-limiting/rate-limiting.module';
+import { RateLimitingMiddleware } from './rate-limiting/rate-limiting.middleware';
+import { PostService } from './post/post.service'; // Ensure this import is included
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 @Module({
@@ -59,7 +59,6 @@ dotenv.config();
         '.env.test',
       ],
     }),
-
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -74,8 +73,7 @@ dotenv.config();
         autoLoadEntities: true,
       }),
     }),
-
-    // Import modules
+    RateLimitingModule,
     AuthModule,
     JobPostingsModule,
     CompanyPostingsModule,
@@ -105,25 +103,23 @@ dotenv.config();
     ProjectModule,
     TimeTrackingModule,
     SearchModule,
-    ReputationModule,
-    BlockchainModule,
     CommentModule,
     MessagingModule,
     ErrorTrackingModule,
+    ReputationModule,
+    BlockchainModule,
     SkillsModule,
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    // Apply error tracking middleware first to catch all errors
     consumer
       .apply(ErrorTrackingMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
-
-    // Apply other middleware
-    consumer
+      .forRoutes('*')
+      .apply(RateLimitingMiddleware)
+      .forRoutes('*')
       .apply(AuthMiddleware, ApiUsageMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
+      .forRoutes('*');
   }
 }
