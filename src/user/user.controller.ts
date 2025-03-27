@@ -5,12 +5,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuditService } from '@src/audit/audit.service';
 import { User } from './user.interface'; // Import the User interface
+import { CacheService } from "@src/cache/cache.service";
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly auditService: AuditService,
+    private cacheManager: CacheService
   ) {}
 
   @Post()
@@ -35,22 +37,36 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async findAll() {
+    const cachedUsers = await this.cacheManager.get(`user:all`, 'UserService');
+    if (cachedUsers) {
+      return cachedUsers;
+    }
+    const users = await this.userService.findAll();
+    await this.cacheManager.set(`user:all`, users);
+    return users;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const cachedUser = await this.cacheManager.get(`user:${id}`, 'UserService');
+    if (cachedUser) {
+      return cachedUser;
+    }
+    const user =  await this.userService.findOne(id);
+    await this.cacheManager.set(`user:${id}`, user);
+    return user;
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    await this.cacheManager.del(`user:${id}`);
     return this.userService.updateUser(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    await this.cacheManager.del(`user:${id}`);
     return this.userService.remove(id);
   }
 }
