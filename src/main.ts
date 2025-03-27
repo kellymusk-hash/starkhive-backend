@@ -16,6 +16,9 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // Set global prefix for all routes
+  app.setGlobalPrefix('api/admin');
+
   // Session configuration
   app.use(
     session({
@@ -35,7 +38,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(3001);
+  await app.listen(process.env.PORT || 3000);
 
   console.log(`Application is running on: ${await app.getUrl()}`);
 }

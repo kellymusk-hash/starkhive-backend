@@ -6,15 +6,16 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UtilService } from './utils/utils.function';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '@src/user/entities/user.entity'; // Adjust path if needed
+import { User } from '@src/user/entities/user.entity';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { GitHubStrategy } from './strategies/github.strategy';
 import { LinkedInStrategy } from './strategies/linkedin.strategy';
-import { PassportSerializer } from '@nestjs/passport';
+import { UserModule } from '@src/user/user.module';
+import { MfaModule } from './mfa/mfa.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]), // Ensure User is part of this module
+    TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -23,6 +24,8 @@ import { PassportSerializer } from '@nestjs/passport';
       }),
       inject: [ConfigService],
     }),
+    UserModule,
+    MfaModule,
   ],
   providers: [
     AuthService,

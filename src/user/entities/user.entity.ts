@@ -18,10 +18,17 @@ import {
   UpdateDateColumn,
   Index,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
-import { OneToOne } from 'typeorm';
 import { FreelancerProfile } from 'src/freelancer-profile/entities/freelancer-profile.entity';
 import { Post } from 'src/post/entities/post.entity';
+import { AuditLog } from '@src/audit/entitites/audit-log.entity';
+import { Content } from '@src/content/entities/content.entity';
+import { Connection } from '@src/connection/entities/connection.entity';
+import { ConnectionNotification } from '@src/notifications/entities/connection-notification.entity';
+import { UserSkill } from '../../skills/entities/skill.entity';
+import { Reputation } from '@src/reputation/Reputation.entity';
+import { Report } from '@src/reports/report.entity';
 
 @Entity('users')
 @Index(['username', 'email'])
@@ -29,8 +36,13 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @OneToOne(() => Reputation, (reputation) => reputation.user, {
+    cascade: true,
+  })
+  reputation: Reputation;
+
   @Column({ unique: true, nullable: true })
-  @IsNotEmpty()
+  @IsOptional()
   @Length(3, 20)
   username?: string;
 
@@ -41,7 +53,7 @@ export class User {
 
   @Column({ unique: true, nullable: true })
   @IsOptional()
-  @IsEmail()
+  @IsString()
   password: string;
 
   @Column({ unique: true, nullable: true })
@@ -56,6 +68,7 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.author)
   posts: Post[];
+
   @OneToMany(() => NotificationSettings, (notification) => notification.user)
   notificationSettings: NotificationSettings[];
 
@@ -65,7 +78,7 @@ export class User {
   @IsString()
   emailTokenVerification?: string;
 
-  @IsBoolean()
+  @IsString()
   resetToken: string;
 
   @IsDate()
@@ -77,14 +90,20 @@ export class User {
   @UpdateDateColumn()
   updatedAt?: Date;
 
+  @OneToMany(() => Content, (content) => content.creator)
+  content: Content[];
+
+  @OneToMany(() => UserSkill, (userSkill) => userSkill.user)
+  skills: UserSkill[];
+
   @OneToOne(
     () => FreelancerProfile,
     (freelancerProfile) => freelancerProfile.user,
     { cascade: true },
   )
-  freelancerProfile?: FreelancerProfile;
+  freelancerProfile: FreelancerProfile;
 
-  // Add OAuth fields
+  // OAuth fields
   @Column({ nullable: true })
   googleId?: string;
 
@@ -92,11 +111,39 @@ export class User {
   provider?: string;
 
   @Column({ nullable: true })
-  name?: string; // Add the `name` field
+  name?: string;
 
   @Column({ nullable: true })
   githubId?: string;
 
   @Column({ nullable: true })
   linkedinId?: string;
+
+  @OneToMany(() => AuditLog, (auditLog) => auditLog.user)
+  auditLogs: AuditLog[];
+
+  @Column({ nullable: true })
+  connectionPrivacy?: string;
+
+  @OneToMany(() => Connection, (connection) => connection.requester)
+  sentConnections: Connection[];
+
+  @OneToMany(() => Connection, (connection) => connection.recipient)
+  receivedConnections: Connection[];
+
+  @OneToMany(
+    () => ConnectionNotification,
+    (notification) => notification.user,
+    { cascade: true },
+  )
+  notifications: Notification[];
+
+  @Column({ default: false })
+  mfaEnabled: boolean;
+
+  @Column({ type: 'varchar', nullable: true })
+  mfaSecret: string | null;
+
+  @OneToMany(() => Report, (report) => report.reporter)
+  reports: Report[];
 }

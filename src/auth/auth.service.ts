@@ -23,16 +23,18 @@ import {
 } from './dtos/auth.dto';
 import { generateUniqueKey, UtilService } from './utils/utils.function';
 import { emailverification } from '../Email/verification';
+import { MfaService } from './mfa/mfa.service';
 
 dotenv.config();
 
 @Injectable()
 export class AuthService {
   constructor(
-    private jwtService: JwtService,
-    private utilService: UtilService,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
+    private readonly utilService: UtilService,
+    private readonly mfaService: MfaService,
   ) {}
 
   private generateNonce(): string {
@@ -103,6 +105,7 @@ export class AuthService {
         password: hashedPassword,
         emailTokenVerification: await generateUniqueKey(6),
         walletAddress: dto?.walletAddress,
+        username: dto?.username,
       });
 
       user.tokenExpires = new Date(Date.now() + 15 * 60 * 1000);
@@ -185,6 +188,29 @@ export class AuthService {
       );
       if (!isPasswordValid) {
         throw new UnauthorizedException('Invalid credentials');
+      }
+
+      // Check if MFA is enabled
+      if (user.mfaEnabled) {
+        if (!dto.mfaToken) {
+          return {
+            data: { 
+              requiresMfa: true,
+              userId: user.id,
+              message: 'MFA token required'
+            },
+            success: true,
+            code: HttpStatus.OK,
+            message: 'MFA verification required',
+          };
+        }
+
+        // Verify MFA token
+        const mfaValid = await this.mfaService.verifyMfaToken(user.id, dto.mfaToken);
+        
+        if (!mfaValid.success) {
+          throw new UnauthorizedException('Invalid MFA token');
+        }
       }
 
       const accessToken = await this.utilService.generateJwt(user);
