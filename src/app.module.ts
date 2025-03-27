@@ -45,6 +45,7 @@ import { SkillsModule } from './skills/skills.module';
 import { RateLimitingModule } from './rate-limiting/rate-limiting.module';
 import { RateLimitingMiddleware } from './rate-limiting/rate-limiting.middleware';
 import { PostService } from './post/post.service'; // Ensure this import is included
+import { MailModule } from './mail/mail.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -53,10 +54,10 @@ dotenv.config();
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [
-        '.env.local',
+        // '.env.local',
         '.env.development',
-        '.env.production',
-        '.env.test',
+        // '.env.production',
+        // '.env.test',
       ],
     }),
     TypeOrmModule.forRootAsync({
@@ -64,11 +65,16 @@ dotenv.config();
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get<string>('DATABASE_HOST'),
-        port: configService.get<number>('DATABASE_PORT'),
-        username: configService.get<string>('DATABASE_USER'),
-        password: configService.get<string>('DATABASE_PASSWORD'),
-        database: configService.get<string>('DATABASE_NAME'),
+        // host: configService.get<string>('DATABASE_HOST'),
+        host: 'localhost',
+        // port: configService.get<number>('DATABASE_PORT'),
+        port: 5432,
+        // username: configService.get<string>('DATABASE_USER'),
+        username: 'postgres',
+        // password: configService.get<string>('DATABASE_PASSWORD'),
+        password: 'password',
+        // database: configService.get<string>('DATABASE_NAME'),
+        database: 'starkHive',
         synchronize: configService.get<string>('NODE_ENV') !== 'production',
         autoLoadEntities: true,
       }),
@@ -109,6 +115,7 @@ dotenv.config();
     ReputationModule,
     BlockchainModule,
     SkillsModule,
+    MailModule,
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })

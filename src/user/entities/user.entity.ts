@@ -71,9 +71,11 @@ export class User {
   notificationSettings: NotificationSettings[];
 
   @IsBoolean()
+  @Column({ nullable: true })
   isEmailVerified: boolean;
 
   @IsString()
+  @Column({ nullable: true })
   emailTokenVerification?: string;
 
   @IsBoolean()
