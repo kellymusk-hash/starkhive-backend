@@ -46,6 +46,7 @@ import { RateLimitingModule } from './rate-limiting/rate-limiting.module';
 import { RateLimitingMiddleware } from './rate-limiting/rate-limiting.middleware';
 import { PostService } from './post/post.service'; // Ensure this import is included
 import * as dotenv from 'dotenv';
+import { RecommendationsModule } from './recommendations/recommendations.module';
 dotenv.config();
 
 @Module({
@@ -109,6 +110,7 @@ dotenv.config();
     ReputationModule,
     BlockchainModule,
     SkillsModule,
+    RecommendationsModule,
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })
