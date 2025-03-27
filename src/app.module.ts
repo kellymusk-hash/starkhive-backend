@@ -46,6 +46,7 @@ import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-track
 import { ReputationModule } from './reputation/reputation.module';
 import { BlockchainModule } from './blockchain/blockchain.module';
 import { SkillsModule } from './skills/skills.module';
+import { UserSessionModule } from './user-session/user-session.module';
 dotenv.config();
 
 @Module({
@@ -111,6 +112,7 @@ dotenv.config();
     MessagingModule,
     ErrorTrackingModule,
     SkillsModule,
+    UserSessionModule,
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })
