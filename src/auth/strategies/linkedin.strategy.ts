@@ -11,12 +11,11 @@ export class LinkedInStrategy extends PassportStrategy(Strategy, 'linkedin') {
     private authService: AuthService,
   ) {
     super({
-      clientID: configService.get('LINKEDIN_CLIENT_ID'),
-      clientSecret: configService.get('LINKEDIN_CLIENT_SECRET'),
-      callbackURL: configService.get('LINKEDIN_CALLBACK_URL'),
+      clientID: configService.get<string>('LINKEDIN_CLIENT_ID') || '',
+      clientSecret: configService.get<string>('LINKEDIN_CLIENT_SECRET') || '',
+      callbackURL: configService.get<string>('LINKEDIN_CALLBACK_URL') || '',
       scope: ['r_emailaddress', 'r_liteprofile'],
-      state: true,
-      passReqToCallback: true,
+      passReqToCallback: true, // Keep this if using request-based authentication
     });
   }
 
