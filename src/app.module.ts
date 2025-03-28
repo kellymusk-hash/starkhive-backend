@@ -35,6 +35,7 @@ import { ConnectionModule } from './connection/connection.module';
 import { ProjectModule } from './project/project.module';
 import { TimeTrackingModule } from './time-tracking/time-tracking.module';
 import { SearchModule } from './search/search.module';
+import { AuditLogModule } from './audit-log/audit-log.module';
 import { CommentModule } from './comment/comment.module';
 import { MessagingModule } from './messaging/messaging.module';
 import { ErrorTrackingModule } from './error-tracking/error-tracking.module';
@@ -42,6 +43,7 @@ import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-track
 import { ReputationModule } from './reputation/reputation.module';
 import { BlockchainModule } from './blockchain/blockchain.module';
 import { SkillsModule } from './skills/skills.module';
+import { CacheModule } from './cache/cache.module';
 import { RateLimitingModule } from './rate-limiting/rate-limiting.module';
 import { RateLimitingMiddleware } from './rate-limiting/rate-limiting.middleware';
 import { PostService } from './post/post.service'; // Ensure this import is included
@@ -103,12 +105,16 @@ dotenv.config();
     ProjectModule,
     TimeTrackingModule,
     SearchModule,
+    AuditLogModule,
     CommentModule,
     MessagingModule,
     ErrorTrackingModule,
     ReputationModule,
     BlockchainModule,
     SkillsModule,
+
+    // Cache module
+    CacheModule,
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })
@@ -120,6 +126,7 @@ export class AppModule {
       .apply(RateLimitingMiddleware)
       .forRoutes('*')
       .apply(AuthMiddleware, ApiUsageMiddleware)
-      .forRoutes('*');
+      .exclude('auth/register', 'auth/login')
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }
