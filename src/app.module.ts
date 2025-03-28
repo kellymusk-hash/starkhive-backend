@@ -50,6 +50,7 @@ import { RateLimitingMiddleware } from './rate-limiting/rate-limiting.middleware
 import { PostService } from './post/post.service'; // Ensure this import is included
 import { SseModule } from './sse/sse.module';
 import * as dotenv from 'dotenv';
+import { RecommendationsModule } from './recommendations/recommendations.module';
 dotenv.config();
 
 @Module({
@@ -114,6 +115,7 @@ dotenv.config();
     ReputationModule,
     BlockchainModule,
     SkillsModule,
+    RecommendationsModule,
     UserSessionModule,
 
     // Cache module
