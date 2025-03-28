@@ -30,16 +30,20 @@ export class TransactionLogService {
     try {
       const transactionLog = new TransactionLog();
       transactionLog.email = data.email;
-      transactionLog.amount = data.amount;
-      transactionLog.reference = data.reference;
+      transactionLog.amount = data.amount ?? 0;
       transactionLog.type = data.type;
       transactionLog.status = data.status;
-      transactionLog.metadata = data.metadata ? JSON.stringify(data.metadata) : null;
-      transactionLog.error = data.error;
-
+      transactionLog.metadata = data.metadata
+        ? JSON.stringify(data.metadata)
+        : '';
+      transactionLog.reference = data.reference ?? '';
+      transactionLog.error = data.error ?? '';
       return await this.transactionLogRepository.save(transactionLog);
-    } catch (error) {
-      this.logger.error(`Failed to log transaction: ${error.message}`, error.stack);
+    } catch (error: any) {
+      this.logger.error(
+        `Failed to log transaction: ${error.message}`,
+        error.stack,
+      );
     }
   }
 
@@ -54,42 +58,49 @@ export class TransactionLogService {
     failureReason?: string;
   }) {
     try {
-      let query: any = {};
-      
+      const query: any = {};
+
       if (data.reference) {
         query.reference = data.reference;
       } else if (data.email) {
         query.email = data.email;
       } else {
-        throw new Error('Either reference or email is required for updating transaction');
+        throw new Error(
+          'Either reference or email is required for updating transaction',
+        );
       }
-      
-      const transactionLog = await this.transactionLogRepository.findOne({ where: query });
-      
+
+      const transactionLog = await this.transactionLogRepository.findOne({
+        where: query,
+      });
+
       if (!transactionLog) {
-        this.logger.warn(`Transaction not found for update: ${JSON.stringify(query)}`);
+        this.logger.warn(
+          `Transaction not found for update: ${JSON.stringify(query)}`,
+        );
         return;
       }
-      
+
       if (data.status) transactionLog.status = data.status;
       if (data.amount) transactionLog.amount = data.amount;
       if (data.paymentDate) transactionLog.paymentDate = data.paymentDate;
-      if (data.metadata) transactionLog.metadata = JSON.stringify(data.metadata);
+      if (data.metadata)
+        transactionLog.metadata = JSON.stringify(data.metadata);
       if (data.error) transactionLog.error = data.error;
       if (data.failureReason) transactionLog.failureReason = data.failureReason;
-      if (data.reference && !transactionLog.reference) transactionLog.reference = data.reference;
-      
+      if (data.reference && !transactionLog.reference)
+        transactionLog.reference = data.reference;
+
       return await this.transactionLogRepository.save(transactionLog);
-    } catch (error) {
-      this.logger.error(`Failed to update transaction: ${error.message}`, error.stack);
+    } catch (error: any) {
+      this.logger.error(
+        `Failed to update transaction: ${error.message}`,
+        error.stack,
+      );
     }
   }
 
-  async logWebhook(data: {
-    event: string;
-    reference: string;
-    data: any;
-  }) {
+  async logWebhook(data: { event: string; reference: string; data: any }) {
     try {
       const webhookLog = new WebhookLog();
       webhookLog.event = data.event;
@@ -97,7 +108,7 @@ export class TransactionLogService {
       webhookLog.payload = JSON.stringify(data.data);
 
       return await this.webhookLogRepository.save(webhookLog);
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`Failed to log webhook: ${error.message}`, error.stack);
     }
   }
@@ -111,11 +122,14 @@ export class TransactionLogService {
       const callbackLog = new CallbackLog();
       callbackLog.reference = data.reference;
       callbackLog.status = data.status;
-      callbackLog.error = data.error;
+      callbackLog.error = data.error ?? '';
 
       return await this.callbackLogRepository.save(callbackLog);
-    } catch (error) {
-      this.logger.error(`Failed to log callback: ${error.message}`, error.stack);
+    } catch (error: any) {
+      this.logger.error(
+        `Failed to log callback: ${error.message}`,
+        error.stack,
+      );
     }
   }
 }
