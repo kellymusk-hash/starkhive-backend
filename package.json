@@ -44,6 +44,7 @@
     "cache-manager": "^6.4.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "csvtojson": "^2.0.10",
     "express-session": "^1.18.1",
     "get-starknet": "^3.0.1",
     "json2csv": "^6.0.0-alpha.2",

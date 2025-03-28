@@ -8,6 +8,7 @@ import { Report } from '@src/reporting/entities/report.entity';
 import { AuditLog } from '@src/audit/entitites/audit-log.entity';
 import { Content } from '@src/content/entities/content.entity';
 import { UserRepository } from './repositories/user.repositories';
+import { UserImportService } from './providers/user-import.service';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { UserRepository } from './repositories/user.repositories';
     AuditModule,
   ], // Ensure User is included here
   controllers: [UserController],
-  providers: [UserService, UserRepository],
+  providers: [UserService, UserRepository, UserImportService],
   exports: [UserService, TypeOrmModule, UserRepository],
 })
 export class UserModule {}
