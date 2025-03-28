@@ -7,13 +7,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
+import { RequestStatus } from '../enums/RequestStatus.enum';
 
-export enum RequestStatus {
-  PENDING = 'pending',
-  ACCEPTED = 'accepted',
-  DECLINED = 'declined',
-  COMPLETED = 'completed',
-}
+
 
 @Entity('recommendation_requests')
 export class RecommendationRequest {
@@ -38,3 +34,11 @@ export class RecommendationRequest {
   @UpdateDateColumn()
   updatedAt: Date;
 }
+
+
+
+
+
+
+
+

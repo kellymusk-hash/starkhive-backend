@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsUUID, IsEnum, IsOptional, IsBoolean } from "class-validator"
-import { RecommendationStatus } from "../entities/recommendation.entity"
+import { RecommendationStatus } from "../enums/RecommendationStatus.enum"
 
 export class CreateRecommendationDto {
   @IsNotEmpty()

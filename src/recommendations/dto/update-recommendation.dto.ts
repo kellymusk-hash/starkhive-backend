@@ -1,5 +1,5 @@
 import { IsOptional, IsEnum, IsString, IsBoolean } from "class-validator"
-import { RecommendationStatus } from "../entities/recommendation.entity"
+import { RecommendationStatus } from "../enums/RecommendationStatus.enum"
 
 export class UpdateRecommendationDto {
   @IsOptional()

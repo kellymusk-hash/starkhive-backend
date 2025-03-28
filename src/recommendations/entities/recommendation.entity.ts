@@ -7,12 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '@src/user/entities/user.entity';
-
-export enum RecommendationStatus {
-  PENDING = 'pending',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
-}
+import { RecommendationStatus } from '../enums/RecommendationStatus.enum';
 
 @Entity('recommendations')
 export class Recommendation {
