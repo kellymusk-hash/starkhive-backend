@@ -43,6 +43,7 @@ import { ErrorTrackingMiddleware } from './error-tracking/middleware/error-track
 import { ReputationModule } from './reputation/reputation.module';
 import { BlockchainModule } from './blockchain/blockchain.module';
 import { SkillsModule } from './skills/skills.module';
+import { UserSessionModule } from './user-session/user-session.module';
 import { CacheModule } from './cache/cache.module';
 import { RateLimitingModule } from './rate-limiting/rate-limiting.module';
 import { RateLimitingMiddleware } from './rate-limiting/rate-limiting.middleware';
@@ -113,6 +114,7 @@ dotenv.config();
     ReputationModule,
     BlockchainModule,
     SkillsModule,
+    UserSessionModule,
 
     // Cache module
     CacheModule,
