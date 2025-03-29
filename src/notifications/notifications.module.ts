@@ -6,12 +6,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JobNotification } from './entities/job-notification.entities';
 import { PolicyVersionModule } from '@src/policy-version/policy-version.module';
 import { ConnectionNotification } from './entities/connection-notification.entity';
+import { SseModule } from '@src/sse/sse.module';
 
 @Module({
   imports: [
     NotificationSettingsModule,
     TypeOrmModule.forFeature([JobNotification, ConnectionNotification]),
     forwardRef(() => PolicyVersionModule),
+    forwardRef(() => SseModule),
   ],
   providers: [NotificationsService],
   controllers: [NotificationsController],

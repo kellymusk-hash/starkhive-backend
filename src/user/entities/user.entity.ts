@@ -29,6 +29,7 @@ import { ConnectionNotification } from '@src/notifications/entities/connection-n
 import { UserSkill } from '../../skills/entities/skill.entity';
 import { Reputation } from '@src/reputation/Reputation.entity';
 import { Report } from '@src/reports/report.entity';
+import { UserSession } from '@src/user-session/entities/user-session.entity';
 
 @Entity('users')
 @Index(['username', 'email'])
@@ -73,9 +74,11 @@ export class User {
   notificationSettings: NotificationSettings[];
 
   @IsBoolean()
+  @Column({ nullable: true })
   isEmailVerified: boolean;
 
   @IsString()
+  @Column({ nullable: true })
   emailTokenVerification?: string;
 
   @IsString()
@@ -146,4 +149,7 @@ export class User {
 
   @OneToMany(() => Report, (report) => report.reporter)
   reports: Report[];
+
+  @OneToMany(() => UserSession, (session) => session.user)
+  sessions: UserSession[];
 }
