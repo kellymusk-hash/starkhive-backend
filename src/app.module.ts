@@ -47,6 +47,7 @@ import { CacheModule } from './cache/cache.module';
 import { RateLimitingModule } from './rate-limiting/rate-limiting.module';
 import { RateLimitingMiddleware } from './rate-limiting/rate-limiting.middleware';
 import { PostService } from './post/post.service'; // Ensure this import is included
+import { JobAnalyticsModule } from './job-analytics/job-analytics.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -115,6 +116,8 @@ dotenv.config();
 
     // Cache module
     CacheModule,
+
+    JobAnalyticsModule,
   ],
   providers: [RolesGuard, PermissionGuard, PermissionService, PostService],
 })
